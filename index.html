@@ -87,7 +87,7 @@
 <div class="header">
   <div>
     <h1>River Flows</h1>
-    <div class="meta" id="meta">Updated: June 1, 2026 at 8:55 AM PT</div>
+    <div class="meta" id="meta">Updated: June 1, 2026 at 2:00 AM PT</div>
   </div>
 </div>
 
@@ -119,26 +119,26 @@ const GAUGES = [
   { id: 'TNAW', source: 'bor', borLabel: 'Teanaway River at Forks', name: 'Teanaway R at Forks', region: 'Yakima Basin', species: ['trout'], cfs: 184, tempC: null, spark30: [] },
   { id: 'RBDW', source: 'bor', borLabel: 'Yakima River blw Roza Dam', name: 'Yakima R blw Roza Dam', region: 'Yakima Basin', species: ['trout'], cfs: 1329, tempC: null, spark30: [] },
   // USGS - Yakima Basin
-  { id: '12484500', source: 'usgs', name: 'Yakima R at Umtanum (Canyon)', region: 'Yakima Basin', species: ['trout'], cfs: 2090, tempC: null, spark30: [2790,2710,2690,2590,3240,3430,2930,2610,2310,2180,2030,2120,3060,2980,1940,1780,1980,1830,1770,1840,1930,1820,2520,2810,2700,1950,1840,1770,1830,2030] },
-  { id: '12500450', source: 'usgs', name: 'Yakima R at Union Gap', region: 'Yakima Basin', species: ['trout'], cfs: 2800, tempC: null, spark30: [3330,3620,3780,3930,4450,5120,5150,4360,3720,3380,3140,2990,3500,4410,4080,3300,2790,2470,2360,2390,2530,2580,2610,2970,3840,4140,3640,3300,3090,2990] },
-  { id: '12510500', source: 'usgs', name: 'Yakima R at Kiona', region: 'Yakima Basin', species: ['trout'], cfs: 1470, tempC: 18.4, spark30: [2120,2600,2850,2910,3150,3960,4400,3830,2780,2280,2100,1890,1670,3040,3480,2500,1630,1270,1050,875,953,1250,1110,1230,2610,3100,2660,2010,1650,1540] },
+  { id: '12484500', source: 'usgs', name: 'Yakima R at Umtanum (Canyon)', region: 'Yakima Basin', species: ['trout'], cfs: 2120, tempC: null, spark30: [2790,2710,2690,2590,3240,3430,2930,2610,2310,2180,2030,2120,3060,2980,1940,1780,1980,1830,1770,1840,1930,1820,2520,2810,2700,1950,1840,1770,1830,2030] },
+  { id: '12500450', source: 'usgs', name: 'Yakima R at Union Gap', region: 'Yakima Basin', species: ['trout'], cfs: 2720, tempC: null, spark30: [3330,3620,3780,3930,4450,5120,5150,4360,3720,3380,3140,2990,3500,4410,4080,3300,2790,2470,2360,2390,2530,2580,2610,2970,3840,4140,3640,3300,3090,2990] },
+  { id: '12510500', source: 'usgs', name: 'Yakima R at Kiona', region: 'Yakima Basin', species: ['trout'], cfs: 1430, tempC: 20.6, spark30: [2120,2600,2850,2910,3150,3960,4400,3830,2780,2280,2100,1890,1670,3040,3480,2500,1630,1270,1050,875,953,1250,1110,1230,2610,3100,2660,2010,1650,1540] },
   // BOR - Parker
   { id: 'PARW', source: 'bor', borLabel: 'Yakima River near Parker', name: 'Yakima R nr Parker', region: 'Yakima Basin', species: ['trout'], cfs: 448, tempC: null, spark30: [] },
   // Naches Basin
   { id: 'CLFW', source: 'bor', borLabel: 'Naches River nr. Clf\'Dell', name: 'Naches R nr Cliffdell', region: 'Naches Basin', species: ['trout'], cfs: 1100, tempC: null, spark30: [] },
-  { id: '12488500', source: 'usgs', name: 'American R nr Nile', region: 'Naches Basin', species: ['trout'], cfs: 228, tempC: null, spark30: [350,409,479,529,558,555,489,427,404,397,382,440,428,365,324,291,265,246,237,247,265,292,305,296,264,243,260,338,289,240] },
-  { id: '12492900', source: 'usgs', name: 'Oak Creek nr Naches', region: 'Naches Basin', species: ['trout'], cfs: 8, tempC: 9.3, spark30: [18,18,17,16,16,15,15,14,13,13,13,13,12,12,12,11,11,11,10,10,10,9,9,9,9,9,9,9,9,8] },
-  { id: '12134500', source: 'usgs', name: 'Skykomish R nr Gold Bar', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 2250, tempC: 10.6, spark30: [4320,4940,5390,5440,5140,4590,4020,3450,3390,3260,3250,4890,6660,5370,5010,4370,3740,3410,3170,3180,3200,3220,3160,3020,2750,2520,2720,3210,2860,2370] },
-  { id: '12189500', source: 'usgs', name: 'Sauk R at Sauk', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 3330, tempC: 9.8, spark30: [3890,4690,5480,5940,6020,5590,5110,4310,4120,4020,4050,5500,6830,5680,5130,4440,3860,3580,3430,3480,3640,3910,4100,4020,3710,3400,4210,5470,4260,3440] },
+  { id: '12488500', source: 'usgs', name: 'American R nr Nile', region: 'Naches Basin', species: ['trout'], cfs: 218, tempC: null, spark30: [350,409,479,529,558,555,489,427,404,397,382,440,428,365,324,291,265,246,237,247,265,292,305,296,264,243,260,338,289,240] },
+  { id: '12492900', source: 'usgs', name: 'Oak Creek nr Naches', region: 'Naches Basin', species: ['trout'], cfs: 8, tempC: 13.4, spark30: [18,18,17,16,16,15,15,14,13,13,13,13,12,12,12,11,11,11,10,10,10,9,9,9,9,9,9,9,9,8] },
+  { id: '12134500', source: 'usgs', name: 'Skykomish R nr Gold Bar', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 2200, tempC: 11.8, spark30: [4320,4940,5390,5440,5140,4590,4020,3450,3390,3260,3250,4890,6660,5370,5010,4370,3740,3410,3170,3180,3200,3220,3160,3020,2750,2520,2720,3210,2860,2370] },
+  { id: '12189500', source: 'usgs', name: 'Sauk R at Sauk', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 3280, tempC: 11.3, spark30: [3890,4690,5480,5940,6020,5590,5110,4310,4120,4020,4050,5500,6830,5680,5130,4440,3860,3580,3430,3480,3640,3910,4100,4020,3710,3400,4210,5470,4260,3440] },
   { id: '12194000', source: 'usgs', name: 'Skagit R nr Concrete', region: 'North Cascades / NW WA', species: ['steelhead'], cfs: 13200, tempC: null, spark30: [12700,14300,15600,16500,17000,15900,15100,13300,12900,13500,15000,15900,19000,16900,16100,14600,12900,12400,12100,13500,14800,13200,13400,13300,12600,12200,14200,16500,15100,13500] },
-  { id: '12449950', source: 'usgs', name: 'Methow R at Pateros', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 4390, tempC: null, spark30: [5300,6050,7160,8440,9360,9750,9160,8010,7260,6710,6340,6480,7060,6000,5210,4610,4160,3850,3660,3600,3680,3920,4290,4390,4340,4180,4490,6160,6490,5060] },
-  { id: '12041200', source: 'usgs', name: 'Hoh R nr Forks', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 802, tempC: null, spark30: [1260,1420,1500,1500,1490,1340,1170,1060,1020,991,994,1130,1090,1210,1310,1110,967,904,909,914,947,1030,1010,1110,1260,958,1070,1180,981,839] },
-  { id: '12043000', source: 'usgs', name: 'Calawah R nr Forks', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 169, tempC: 11.2, spark30: [291,278,268,258,251,242,234,227,219,212,204,200,207,368,463,320,268,247,232,220,210,202,193,252,255,212,198,187,180,174] },
+  { id: '12449950', source: 'usgs', name: 'Methow R at Pateros', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 4330, tempC: null, spark30: [5300,6050,7160,8440,9360,9750,9160,8010,7260,6710,6340,6480,7060,6000,5210,4610,4160,3850,3660,3600,3680,3920,4290,4390,4340,4180,4490,6160,6490,5060] },
+  { id: '12041200', source: 'usgs', name: 'Hoh R nr Forks', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 813, tempC: null, spark30: [1260,1420,1500,1500,1490,1340,1170,1060,1020,991,994,1130,1090,1210,1310,1110,967,904,909,914,947,1030,1010,1110,1260,958,1070,1180,981,839] },
+  { id: '12043000', source: 'usgs', name: 'Calawah R nr Forks', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 172, tempC: 13.1, spark30: [291,278,268,258,251,242,234,227,219,212,204,200,207,368,463,320,268,247,232,220,210,202,193,252,255,212,198,187,180,174] },
   { id: '12043300', source: 'usgs', name: 'Hoko R nr Sekiu', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 35, tempC: null, spark30: [71,67,64,61,60,59,57,56,53,51,49,48,51,76,103,70,58,54,52,49,47,45,42,51,54,45,42,40,38,37] },
-  { id: '06043500', source: 'usgs', name: 'Gallatin R nr Gateway', region: 'Montana', species: ['trout'], cfs: 2370, tempC: null, spark30: [588,623,709,783,759,803,917,1060,1090,1320,1620,1870,2290,1930,1720,1540,1360,1220,1150,1130,1050,1040,1130,1350,1650,1870,2140,2250,2390,2760] },
-  { id: '06041000', source: 'usgs', name: 'Madison R bl Ennis Lake', region: 'Montana', species: ['trout'], cfs: 2170, tempC: 15.4, spark30: [1160,1160,1160,1160,1160,1160,1160,1160,1180,1280,1410,1500,1830,1890,1520,1380,1320,1280,1210,1150,1150,1150,1160,1160,1150,1150,1220,1390,1560,2040] },
-  { id: '12340500', source: 'usgs', name: 'Clark Fork at Missoula', region: 'Montana', species: ['trout'], cfs: 10800, tempC: 9.9, spark30: [4910,5210,5810,6330,6340,6430,7020,7530,7860,8040,8470,8840,9460,9290,8300,7520,6820,6160,5660,5500,5210,4870,4720,4940,5540,6450,7590,8450,8660,9680] },
-  { id: '12414500', source: 'usgs', name: 'St Joe R at Calder', region: 'Idaho', species: ['trout'], cfs: 3080, tempC: null, spark30: [4180,4540,5150,5580,5490,5580,5720,5540,5280,5220,5150,5420,6390,5360,4850,4370,3960,3660,3710,4060,3700,3370] },
+  { id: '06043500', source: 'usgs', name: 'Gallatin R nr Gateway', region: 'Montana', species: ['trout'], cfs: 2270, tempC: null, spark30: [588,623,709,783,759,803,917,1060,1090,1320,1620,1870,2290,1930,1720,1540,1360,1220,1150,1130,1050,1040,1130,1350,1650,1870,2140,2250,2390,2760] },
+  { id: '06041000', source: 'usgs', name: 'Madison R bl Ennis Lake', region: 'Montana', species: ['trout'], cfs: 1890, tempC: 15.5, spark30: [1160,1160,1160,1160,1160,1160,1160,1160,1180,1280,1410,1500,1830,1890,1520,1380,1320,1280,1210,1150,1150,1150,1160,1160,1150,1150,1220,1390,1560,2040] },
+  { id: '12340500', source: 'usgs', name: 'Clark Fork at Missoula', region: 'Montana', species: ['trout'], cfs: 10900, tempC: 10.1, spark30: [4910,5210,5810,6330,6340,6430,7020,7530,7860,8040,8470,8840,9460,9290,8300,7520,6820,6160,5660,5500,5210,4870,4720,4940,5540,6450,7590,8450,8660,9680] },
+  { id: '12414500', source: 'usgs', name: 'St Joe R at Calder', region: 'Idaho', species: ['trout'], cfs: 3070, tempC: null, spark30: [4180,4540,5150,5580,5490,5580,5720,5540,5280,5220,5150,5420,6390,5360,4850,4370,3960,3660,3710,4060,3700,3370] },
 ];
 // DATA_END
 
