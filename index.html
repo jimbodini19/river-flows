@@ -1,0 +1,349 @@
+<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "River Flows",
+  "schemaVersion": 1,
+  "description": "Live monitor for trout and steelhead river flows across Yakima Basin, North Cascades, Olympic Peninsula, Montana, and Idaho. Pulls real-time USGS data on every load: current CFS with 24h trend, water temperature in F with fishability color code, 7-day sparkline, and 30-day YoY comparison. Filter by species (trout, steelhead). Preference persists across sessions.",
+  "mcpTools": [],
+  "mcpServerNames": []
+}
+</script>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>River Flows</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1410; color: #d8e0d8; line-height: 1.4; padding: 16px; }
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #2a342a; }
+  .header h1 { font-size: 18px; font-weight: 600; color: #a0d8a0; }
+  .meta { font-size: 12px; color: #7a8a7a; }
+  .controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
+  .filter-btn { padding: 4px 10px; background: #1a211a; border: 1px solid #2a342a; border-radius: 4px; font-size: 12px; color: #c0d0c0; cursor: pointer; }
+  .filter-btn:hover { background: #232b23; }
+  .filter-btn.active { background: #2c5e2c; color: #fff; border-color: #4caf50; }
+  .legend { margin-left: auto; display: flex; gap: 10px; font-size: 10px; color: #7a8a7a; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 4px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .region { margin-bottom: 18px; }
+  .region-title { font-size: 12px; font-weight: 600; color: #8aa08a; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid #2a342a; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 10px; }
+  .card {
+    background: #1a211a; border: 1px solid #2a342a;
+    border-left-width: 4px; border-radius: 5px;
+    padding: 10px 12px;
+    display: block; color: inherit; text-decoration: none;
+    cursor: pointer; transition: background 0.15s, transform 0.05s;
+  }
+  .card:hover { background: #1f271f; border-color: #3a4a3a; }
+  .card:active { transform: scale(0.995); }
+  .card.ideal { border-left-color: #4caf50; }
+  .card.fishable { border-left-color: #7ec487; }
+  .card.low { border-left-color: #e0a020; }
+  .card.high { border-left-color: #f0a020; }
+  .card.blown { border-left-color: #d63838; }
+  .card.unknown { border-left-color: #4a5a4a; }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .gauge-name { font-size: 12px; font-weight: 600; color: #e8eee8; line-height: 1.25; }
+  .gauge-id { font-size: 9px; color: #6a7a6a; margin-top: 2px; font-family: monospace; }
+  .gauge-id { color: #6a8a9a; }
+  .species-tags { display: flex; gap: 3px; flex-shrink: 0; }
+  .tag { font-size: 9px; padding: 2px 6px; border-radius: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+  .tag-trout { background: #1f3a1f; color: #8acf8a; }
+  .tag-steelhead { background: #1f2f4a; color: #8ac0f0; }
+  .stats { display: flex; align-items: baseline; gap: 8px; margin: 6px 0 4px; }
+  .cfs-value { font-size: 24px; font-weight: 700; color: #e8f0e8; line-height: 1; }
+  .cfs-unit { font-size: 11px; color: #7a8a7a; }
+  .fishability-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #b0c0b0; margin-bottom: 4px; }
+  .fish-pill { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .fish-pill.ideal { background: #2c5e2c; color: #d8f0d8; }
+  .fish-pill.fishable { background: #3a5a3a; color: #c8e0c8; }
+  .fish-pill.low { background: #8a6a1f; color: #fff0d0; }
+  .fish-pill.high { background: #a07020; color: #ffe0c0; }
+  .fish-pill.blown { background: #802020; color: #ffd0d0; }
+  .fish-pill.unknown { background: #3a4a3a; color: #8a9a8a; }
+  .range-info { font-size: 10px; color: #6a7a6a; }
+  .temp { font-size: 11px; color: #8aa08a; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+  .temp-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .temp-cold { background: #5a8acb; } .temp-ideal { background: #4caf50; } .temp-warm { background: #ff9800; } .temp-hot { background: #e53935; } .temp-none { background: #3a4a3a; }
+  .no-data { font-size: 13px; color: #6a7a6a; font-style: italic; padding: 8px 0; }
+  .sparkline-wrap { height: 32px; margin: 6px 0 4px; position: relative; }
+  .sparkline-wrap canvas { max-height: 32px; }
+  .sparkline-label { font-size: 9px; color: #5a6a5a; text-align: right; margin-bottom: 2px; }
+  .brief {
+    font-size: 11px; color: #b5c5b5; margin-top: 8px;
+    padding-top: 6px; border-top: 1px dashed #2a342a;
+    line-height: 1.35;
+  }
+  .brief.pick { color: #d8f0d8; font-weight: 500; }
+  .pick-star { color: #ffcc44; font-weight: 600; }
+  .footer { margin-top: 24px; padding-top: 12px; border-top: 1px solid #2a342a; font-size: 11px; color: #6a7a6a; text-align: center; }
+  .footer a { color: #6a8a9a; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <h1>River Flows</h1>
+    <div class="meta" id="meta">Updated: June 1, 2026 at 8:55 AM PT</div>
+  </div>
+</div>
+
+<div class="controls">
+  <button class="filter-btn active" data-species="all">All</button>
+  <button class="filter-btn" data-species="trout">Trout</button>
+  <button class="filter-btn" data-species="steelhead">Steelhead</button>
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot" style="background:#4caf50"></span>Ideal</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#7ec487"></span>Fishable</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#e0a020"></span>Low</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#f0a020"></span>High</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#d63838"></span>Blown</span>
+  </div>
+</div>
+
+<div id="content"></div>
+
+<div class="footer">
+  Data: <a href="https://waterservices.usgs.gov" target="_blank">USGS NWIS</a>. Auto-refreshes every 4 hours via scheduled task. Click gauge IDs for full station charts.
+</div>
+
+<script>
+// DATA_BEGIN
+const GAUGES = [
+  // BOR Hydromet - Upper Yakima (Bureau of Reclamation)
+  { id: 'EASW', source: 'bor', borLabel: 'Yakima River at Easton', name: 'Yakima R at Easton', region: 'Yakima Basin', species: ['trout'], cfs: 200, tempC: null, spark30: [] },
+  { id: 'YRWW', source: 'bor', borLabel: 'Yakima River near Horlick', name: 'Yakima R nr Horlick', region: 'Yakima Basin', species: ['trout'], cfs: 1880, tempC: null, spark30: [] },
+  { id: 'TNAW', source: 'bor', borLabel: 'Teanaway River at Forks', name: 'Teanaway R at Forks', region: 'Yakima Basin', species: ['trout'], cfs: 184, tempC: null, spark30: [] },
+  { id: 'RBDW', source: 'bor', borLabel: 'Yakima River blw Roza Dam', name: 'Yakima R blw Roza Dam', region: 'Yakima Basin', species: ['trout'], cfs: 1329, tempC: null, spark30: [] },
+  // USGS - Yakima Basin
+  { id: '12484500', source: 'usgs', name: 'Yakima R at Umtanum (Canyon)', region: 'Yakima Basin', species: ['trout'], cfs: 2090, tempC: null, spark30: [2790,2710,2690,2590,3240,3430,2930,2610,2310,2180,2030,2120,3060,2980,1940,1780,1980,1830,1770,1840,1930,1820,2520,2810,2700,1950,1840,1770,1830,2030] },
+  { id: '12500450', source: 'usgs', name: 'Yakima R at Union Gap', region: 'Yakima Basin', species: ['trout'], cfs: 2800, tempC: null, spark30: [3330,3620,3780,3930,4450,5120,5150,4360,3720,3380,3140,2990,3500,4410,4080,3300,2790,2470,2360,2390,2530,2580,2610,2970,3840,4140,3640,3300,3090,2990] },
+  { id: '12510500', source: 'usgs', name: 'Yakima R at Kiona', region: 'Yakima Basin', species: ['trout'], cfs: 1470, tempC: 18.4, spark30: [2120,2600,2850,2910,3150,3960,4400,3830,2780,2280,2100,1890,1670,3040,3480,2500,1630,1270,1050,875,953,1250,1110,1230,2610,3100,2660,2010,1650,1540] },
+  // BOR - Parker
+  { id: 'PARW', source: 'bor', borLabel: 'Yakima River near Parker', name: 'Yakima R nr Parker', region: 'Yakima Basin', species: ['trout'], cfs: 448, tempC: null, spark30: [] },
+  // Naches Basin
+  { id: 'CLFW', source: 'bor', borLabel: 'Naches River nr. Clf\'Dell', name: 'Naches R nr Cliffdell', region: 'Naches Basin', species: ['trout'], cfs: 1100, tempC: null, spark30: [] },
+  { id: '12488500', source: 'usgs', name: 'American R nr Nile', region: 'Naches Basin', species: ['trout'], cfs: 228, tempC: null, spark30: [350,409,479,529,558,555,489,427,404,397,382,440,428,365,324,291,265,246,237,247,265,292,305,296,264,243,260,338,289,240] },
+  { id: '12492900', source: 'usgs', name: 'Oak Creek nr Naches', region: 'Naches Basin', species: ['trout'], cfs: 8, tempC: 9.3, spark30: [18,18,17,16,16,15,15,14,13,13,13,13,12,12,12,11,11,11,10,10,10,9,9,9,9,9,9,9,9,8] },
+  { id: '12134500', source: 'usgs', name: 'Skykomish R nr Gold Bar', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 2250, tempC: 10.6, spark30: [4320,4940,5390,5440,5140,4590,4020,3450,3390,3260,3250,4890,6660,5370,5010,4370,3740,3410,3170,3180,3200,3220,3160,3020,2750,2520,2720,3210,2860,2370] },
+  { id: '12189500', source: 'usgs', name: 'Sauk R at Sauk', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 3330, tempC: 9.8, spark30: [3890,4690,5480,5940,6020,5590,5110,4310,4120,4020,4050,5500,6830,5680,5130,4440,3860,3580,3430,3480,3640,3910,4100,4020,3710,3400,4210,5470,4260,3440] },
+  { id: '12194000', source: 'usgs', name: 'Skagit R nr Concrete', region: 'North Cascades / NW WA', species: ['steelhead'], cfs: 13200, tempC: null, spark30: [12700,14300,15600,16500,17000,15900,15100,13300,12900,13500,15000,15900,19000,16900,16100,14600,12900,12400,12100,13500,14800,13200,13400,13300,12600,12200,14200,16500,15100,13500] },
+  { id: '12449950', source: 'usgs', name: 'Methow R at Pateros', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 4390, tempC: null, spark30: [5300,6050,7160,8440,9360,9750,9160,8010,7260,6710,6340,6480,7060,6000,5210,4610,4160,3850,3660,3600,3680,3920,4290,4390,4340,4180,4490,6160,6490,5060] },
+  { id: '12041200', source: 'usgs', name: 'Hoh R nr Forks', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 802, tempC: null, spark30: [1260,1420,1500,1500,1490,1340,1170,1060,1020,991,994,1130,1090,1210,1310,1110,967,904,909,914,947,1030,1010,1110,1260,958,1070,1180,981,839] },
+  { id: '12043000', source: 'usgs', name: 'Calawah R nr Forks', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 169, tempC: 11.2, spark30: [291,278,268,258,251,242,234,227,219,212,204,200,207,368,463,320,268,247,232,220,210,202,193,252,255,212,198,187,180,174] },
+  { id: '12043300', source: 'usgs', name: 'Hoko R nr Sekiu', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 35, tempC: null, spark30: [71,67,64,61,60,59,57,56,53,51,49,48,51,76,103,70,58,54,52,49,47,45,42,51,54,45,42,40,38,37] },
+  { id: '06043500', source: 'usgs', name: 'Gallatin R nr Gateway', region: 'Montana', species: ['trout'], cfs: 2370, tempC: null, spark30: [588,623,709,783,759,803,917,1060,1090,1320,1620,1870,2290,1930,1720,1540,1360,1220,1150,1130,1050,1040,1130,1350,1650,1870,2140,2250,2390,2760] },
+  { id: '06041000', source: 'usgs', name: 'Madison R bl Ennis Lake', region: 'Montana', species: ['trout'], cfs: 2170, tempC: 15.4, spark30: [1160,1160,1160,1160,1160,1160,1160,1160,1180,1280,1410,1500,1830,1890,1520,1380,1320,1280,1210,1150,1150,1150,1160,1160,1150,1150,1220,1390,1560,2040] },
+  { id: '12340500', source: 'usgs', name: 'Clark Fork at Missoula', region: 'Montana', species: ['trout'], cfs: 10800, tempC: 9.9, spark30: [4910,5210,5810,6330,6340,6430,7020,7530,7860,8040,8470,8840,9460,9290,8300,7520,6820,6160,5660,5500,5210,4870,4720,4940,5540,6450,7590,8450,8660,9680] },
+  { id: '12414500', source: 'usgs', name: 'St Joe R at Calder', region: 'Idaho', species: ['trout'], cfs: 3080, tempC: null, spark30: [4180,4540,5150,5580,5490,5580,5720,5540,5280,5220,5150,5420,6390,5360,4850,4370,3960,3660,3710,4060,3700,3370] },
+];
+// DATA_END
+
+const FISHABILITY = {
+  // BOR upper Yakima
+  'EASW': { low: 100, ideal: [200, 800], high: 1500, blown: 3000 },
+  'YRWW': { low: 500, ideal: [1000, 3000], high: 5000, blown: 8000 },
+  'TNAW': { low: 50, ideal: [100, 400], high: 700, blown: 1200 },
+  'RBDW': { low: 800, ideal: [1500, 3500], high: 5500, blown: 8000 },
+  'PARW': { low: 500, ideal: [800, 2500], high: 4500, blown: 7000 },
+  'CLFW': { low: 200, ideal: [400, 1500], high: 2500, blown: 4000 },
+  // USGS
+  '12484500': { low: 500, ideal: [1000, 2500], high: 4000, blown: 6500 },
+  '12500450': { low: 1000, ideal: [1500, 3500], high: 5500, blown: 8000 },
+  '12510500': { low: 1000, ideal: [1500, 4000], high: 6500, blown: 10000 },
+  '12488500': { low: 100, ideal: [150, 500], high: 800, blown: 1500 },
+  '12492900': { low: 3, ideal: [8, 30], high: 60, blown: 120 },
+  '12134500': { low: 1000, ideal: [1500, 3000], high: 4500, blown: 9000 },
+  '12189500': { low: 800, ideal: [1200, 3000], high: 5000, blown: 9000 },
+  '12194000': { low: 2500, ideal: [3500, 9000], high: 14000, blown: 22000 },
+  '12449950': { low: 600, ideal: [1000, 2500], high: 4000, blown: 7000 },
+  '12041200': { low: 800, ideal: [1500, 3500], high: 5500, blown: 9000 },
+  '12043000': { low: 200, ideal: [400, 1200], high: 2000, blown: 3500 },
+  '12043300': { low: 50, ideal: [100, 400], high: 800, blown: 1500 },
+  '06043500': { low: 200, ideal: [400, 1500], high: 2500, blown: 4500 },
+  '06041000': { low: 600, ideal: [900, 1800], high: 2500, blown: 4000 },
+  '12340500': { low: 1500, ideal: [2500, 6000], high: 10000, blown: 15000 },
+  '12414500': { low: 150, ideal: [300, 1200], high: 2500, blown: 4500 },
+};
+
+function cToF(c) { return c == null ? null : c * 9 / 5 + 32; }
+function tempClass(f) {
+  if (f == null) return 'temp-none';
+  if (f < 50) return 'temp-cold';
+  if (f <= 65) return 'temp-ideal';
+  if (f <= 70) return 'temp-warm';
+  return 'temp-hot';
+}
+function formatCFS(v) {
+  if (v == null) return '–';
+  if (v >= 10000) return (v / 1000).toFixed(1) + 'k';
+  if (v >= 100) return Math.round(v).toLocaleString();
+  return v.toFixed(0);
+}
+function getFishability(siteId, cfs) {
+  const f = FISHABILITY[siteId];
+  if (!f || cfs == null) return { status: 'No data', cls: 'unknown', range: f || null };
+  let cls, status;
+  if (cfs >= f.blown) { cls = 'blown'; status = 'Blown'; }
+  else if (cfs >= f.high) { cls = 'high'; status = 'High'; }
+  else if (cfs >= f.ideal[0] && cfs <= f.ideal[1]) { cls = 'ideal'; status = 'Ideal'; }
+  else if (cfs < f.low) { cls = 'low'; status = 'Low'; }
+  else { cls = 'fishable'; status = 'Fishable'; }
+  return { status, cls, range: f };
+}
+
+function getTrend(spark) {
+  if (!spark || spark.length < 7) return null;
+  const recent = spark.slice(-7);
+  const earlier = spark.slice(-14, -7);
+  if (!earlier.length) return null;
+  const recAvg = recent.reduce((s, v) => s + v, 0) / recent.length;
+  const earAvg = earlier.reduce((s, v) => s + v, 0) / earlier.length;
+  return (recAvg - earAvg) / earAvg;
+}
+
+function getBrief(g, fish) {
+  // Rule-based fishing brief per card
+  const tempF = g.tempC != null ? cToF(g.tempC) : null;
+  const trend = getTrend(g.spark30);
+  const isPick = fish.cls === 'ideal' && (tempF == null || (tempF >= 50 && tempF <= 65));
+  const parts = [];
+
+  if (isPick) parts.push('<span class="pick-star">★ Best pick</span>');
+
+  if (fish.cls === 'blown') {
+    parts.push('Skip it. Wait for flows to drop and color to clear.');
+  } else if (fish.cls === 'high') {
+    parts.push('Big and pushy. Streamers and heavy nymphs in seams and soft edges. Dry-dropper on slower banks if water has clarity.');
+  } else if (fish.cls === 'ideal') {
+    // Tactical guidance depends on temp
+    if (tempF == null) {
+      parts.push('Prime flow. Dry-dropper through riffles, single dries on the soft water late afternoon, nymphs deep through runs.');
+    } else if (tempF >= 55 && tempF <= 65) {
+      parts.push('Prime flow and water temp. Dry-dropper through riffles, single dries late afternoon as hatches come off. Bugs should be moving.');
+    } else if (tempF < 55) {
+      parts.push('Prime flow but cold water. Nymphs deep through runs, swing streamers. Dry action limited until water hits 50°F.');
+    } else if (tempF <= 67) {
+      parts.push('Prime flow, water trending warm. Dries early morning and again at last light, dry-dropper midday, nymphs in shade.');
+    }
+  } else if (fish.cls === 'fishable') {
+    parts.push('Fishable. Dry-dropper covers your bases. Fish technical water, longer leaders, smaller flies.');
+  } else if (fish.cls === 'low') {
+    parts.push('Thin water. Fish stacked in deeper runs and tailouts. Small dries, fine tippet, careful approach. Dawn and dusk are your friends.');
+  }
+
+  if (tempF != null) {
+    if (tempF >= 68) parts.push(`Water is ${tempF.toFixed(0)}°F — ethical concerns for trout. Fish dawn only or skip.`);
+    else if (tempF <= 45) parts.push(`Cold ${tempF.toFixed(0)}°F water; fish slow and deep.`);
+  }
+
+  if (trend != null) {
+    if (trend > 0.20) parts.push('Flows rising fast over the past week.');
+    else if (trend < -0.20) parts.push('Flows dropping; conditions stabilizing.');
+  }
+
+  return { html: parts.join(' '), isPick };
+}
+
+function renderSparkline(canvas, data) {
+  if (!data || data.length < 3) return;
+  new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: data.map((_, i) => i),
+      datasets: [{
+        data,
+        borderColor: '#7ec487',
+        backgroundColor: 'rgba(126, 196, 135, 0.15)',
+        borderWidth: 1.4,
+        pointRadius: 0,
+        tension: 0.3,
+        fill: true,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      scales: { x: { display: false }, y: { display: false, beginAtZero: false } },
+      animation: false,
+    },
+  });
+}
+
+function render() {
+  const species = document.querySelector('.filter-btn.active').dataset.species;
+  const content = document.getElementById('content');
+  const filtered = GAUGES.filter(g => species === 'all' || g.species.includes(species));
+  const byRegion = {};
+  for (const g of filtered) {
+    if (!byRegion[g.region]) byRegion[g.region] = [];
+    byRegion[g.region].push(g);
+  }
+  let html = '';
+  for (const region of Object.keys(byRegion)) {
+    html += `<div class="region"><div class="region-title">${region}</div><div class="grid">`;
+    for (const g of byRegion[region]) {
+      const tempF = g.tempC != null ? cToF(g.tempC) : null;
+      const fish = getFishability(g.id, g.cfs);
+      const tags = g.species.map(s => `<span class="tag tag-${s}">${s === 'trout' ? 'Trout' : 'Steel'}</span>`).join('');
+      const rangeText = fish.range ? `Ideal ${formatCFS(fish.range.ideal[0])}–${formatCFS(fish.range.ideal[1])} cfs` : '';
+      const cfsBlock = g.cfs == null
+        ? `<div class="no-data">No data right now</div>`
+        : `<div class="stats"><span class="cfs-value">${formatCFS(g.cfs)}</span><span class="cfs-unit">cfs</span></div>`;
+      const gaugeUrl = g.source === 'bor' ? 'https://www.usbr.gov/pn/hydromet/yakima/' : 'https://waterdata.usgs.gov/monitoring-location/' + g.id + '/';
+      html += `<a href="${gaugeUrl}" target="_blank" rel="noopener" class="card ${fish.cls}">
+        <div class="card-header">
+          <div>
+            <div class="gauge-name">${g.name}</div>
+            <div class="gauge-id">${g.source === 'bor' ? 'BOR' : 'USGS'} #${g.id} ↗</div>
+          </div>
+          <div class="species-tags">${tags}</div>
+        </div>
+        ${cfsBlock}
+        <div class="fishability-row">
+          <span class="fish-pill ${fish.cls}">${fish.status}</span>
+          <span class="range-info">${rangeText}</span>
+        </div>
+        ${tempF != null ? `<div class="temp"><span class="temp-dot ${tempClass(tempF)}"></span>${tempF.toFixed(1)}°F water</div>` : ''}
+        ${g.spark30 && g.spark30.length >= 3 ? `
+        <div class="sparkline-label">30-day flow</div>
+        <div class="sparkline-wrap"><canvas id="spark-${g.id}"></canvas></div>` : ''}
+        ${g.cfs != null ? (() => { const b = getBrief(g, fish); return `<div class="brief ${b.isPick ? 'pick' : ''}">${b.html}</div>`; })() : ''}
+      </a>`;
+    }
+    html += '</div></div>';
+  }
+  content.innerHTML = html;
+  // Render sparklines
+  for (const g of filtered) {
+    if (g.spark30 && g.spark30.length >= 3) {
+      const canvas = document.getElementById(`spark-${g.id}`);
+      if (canvas) renderSparkline(canvas, g.spark30);
+    }
+  }
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    localStorage.setItem('riverflows_species', btn.dataset.species);
+    render();
+  });
+});
+
+const savedSpecies = localStorage.getItem('riverflows_species');
+if (savedSpecies) {
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.species === savedSpecies);
+  });
+}
+
+render();
+</script>
+</body>
+</html>
