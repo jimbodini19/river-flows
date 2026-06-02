@@ -123,7 +123,7 @@
 <div id="content"></div>
 
 <div class="footer">
-  Data: <a href="https://waterservices.usgs.gov" target="_blank">USGS NWIS</a> + <a href="https://www.usbr.gov/pn/hydromet/yakima/" target="_blank">BOR Hydromet</a>. Auto-refreshed daily 6 AM PT. Click gauge IDs for full station charts.
+  Data: <a href="https://waterservices.usgs.gov" target="_blank" rel="noopener">USGS NWIS</a> + <a href="https://www.usbr.gov/pn/hydromet/yakima/" target="_blank" rel="noopener">BOR Hydromet</a>. Auto-refreshed daily 6 AM PT. Click gauge IDs for full station charts.
 </div>
 
 <script>
@@ -296,13 +296,15 @@ function getBrief(g, fish) {
   }
   return { html: parts.join(' '), isPick };
 }
+let sparkCharts = [];
 function renderSparkline(canvas, data) {
   if (!data || data.length < 3) return;
-  new Chart(canvas, {
+  const chart = new Chart(canvas, {
     type: 'line',
     data: { labels: data.map((_, i) => i), datasets: [{ data, borderColor: '#7ec487', backgroundColor: 'rgba(126, 196, 135, 0.15)', borderWidth: 1.4, pointRadius: 0, tension: 0.3, fill: true }] },
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false, beginAtZero: false } }, animation: false },
   });
+  sparkCharts.push(chart);
 }
 
 // ----- Filter state -----
@@ -402,6 +404,9 @@ function render() {
     html += '</div>';
   }
   if (!html) html = '<div class="no-data">No gauges match the current filters.</div>';
+  // Tear down existing sparkline charts before replacing the DOM (avoids leaking Chart instances on re-filter)
+  sparkCharts.forEach(c => c.destroy());
+  sparkCharts = [];
   content.innerHTML = html;
   for (const g of filtered) {
     if (g.spark30 && g.spark30.length >= 3) {
