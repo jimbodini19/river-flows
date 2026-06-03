@@ -147,6 +147,7 @@ const GAUGES = [
   { id: '12488500', source: 'usgs', state: 'WA', name: 'American R nr Nile', region: 'Naches Basin', species: ['trout'], cfs: 221, tempC: null, spark30: [412,482,531,560,556,491,430,407,400,385,442,431,368,328,295,269,249,241,251,269,295,309,300,268,247,263,341,293,243] },
   { id: '12492900', source: 'usgs', state: 'WA', name: 'Oak Creek nr Naches', region: 'Naches Basin', species: ['trout'], cfs: 8.03, tempC: 10.6, spark30: [18,17,16,16,15,15,14,13,13,13,13,12,12,12,11,11,11,10,10,10,9,9,9,9,9,9,9,9,8,8] },
   // WASHINGTON — North Cascades / NW WA
+  { id: '12131500', source: 'usgs', state: 'WA', name: 'SF Skykomish R at Skykomish', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 981, tempC: null, spark30: [2290,2520,2570,2450,2230,1960,1710,1650,1580,1570,2270,2620,2190,2010,1760,1560,1440,1390,1380,1390,1410,1410,1350,1260,1170,1250,1520,1340,1120,1030] },
   { id: '12134500', source: 'usgs', state: 'WA', name: 'Skykomish R nr Gold Bar', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 2150, tempC: 11.8, spark30: [4940,5390,5440,5140,4590,4020,3450,3390,3260,3250,4890,6660,5370,5010,4370,3740,3410,3170,3180,3200,3220,3160,3020,2750,2520,2720,3210,2860,2370,2190] },
   { id: '12189500', source: 'usgs', state: 'WA', name: 'Sauk R at Sauk', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 3240, tempC: 11.2, spark30: [4690,5480,5940,6020,5590,5110,4310,4120,4020,4050,5500,6830,5680,5130,4440,3860,3580,3430,3480,3640,3910,4100,4020,3710,3400,4210,5470,4260,3440,3220] },
   { id: '12194000', source: 'usgs', state: 'WA', name: 'Skagit R nr Concrete', region: 'North Cascades / NW WA', species: ['steelhead'], cfs: 16300, tempC: null, spark30: [14300,15600,16500,17000,15900,15100,13300,12900,13500,15000,15900,19000,16900,16100,14600,12900,12400,12100,13500,14800,13200,13400,13300,12600,12200,14200,16500,15100,13500,13100] },
@@ -198,6 +199,7 @@ const FISHABILITY = {
   '12510500': { low: 1000, ideal: [1500, 4000], high: 6500, blown: 10000 },
   '12488500': { low: 100, ideal: [150, 500], high: 800, blown: 1500 },
   '12492900': { low: 3, ideal: [8, 30], high: 60, blown: 120 },
+  '12131500': { low: 500, ideal: [800, 1800], high: 2800, blown: 5500 },
   '12134500': { low: 1000, ideal: [1500, 3000], high: 4500, blown: 9000 },
   '12189500': { low: 800, ideal: [1200, 3000], high: 5000, blown: 9000 },
   '12194000': { low: 2500, ideal: [3500, 9000], high: 14000, blown: 22000 },
