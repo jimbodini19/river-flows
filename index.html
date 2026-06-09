@@ -91,7 +91,7 @@
 <div class="header">
   <div>
     <h1>River Flows</h1>
-    <div class="meta" id="meta">Updated: June 9, 2026 at 7:55 AM PT</div>
+    <div class="meta" id="meta">Updated: June 9, 2026 at 4:03 PM PT</div>
   </div>
 </div>
 
@@ -133,17 +133,17 @@ const STATE_NAMES = { WA: 'Washington', MT: 'Montana', ID: 'Idaho', AZ: 'Arizona
 
 const GAUGES = [
   // WASHINGTON — Yakima Basin (BOR Hydromet)
-  { id: 'EASW', source: 'bor', state: 'WA', borLabel: 'Yakima River at Easton', name: 'Yakima R at Easton', region: 'Yakima Basin', species: ['trout'], cfs: 313, tempC: null, spark30: [] },
-  { id: 'YRWW', source: 'bor', state: 'WA', borLabel: 'Yakima River near Horlick', name: 'Yakima R nr Horlick', region: 'Yakima Basin', species: ['trout'], cfs: 2292, tempC: null, spark30: [] },
-  { id: 'TNAW', source: 'bor', state: 'WA', borLabel: 'Teanaway River at Forks', name: 'Teanaway R at Forks', region: 'Yakima Basin', species: ['trout'], cfs: null, tempC: null, spark30: [] },
-  { id: 'RBDW', source: 'bor', state: 'WA', borLabel: 'Yakima River blw Roza Dam', name: 'Yakima R blw Roza Dam', region: 'Yakima Basin', species: ['trout'], cfs: 724, tempC: null, spark30: [] },
+  { id: 'EASW', source: 'bor', state: 'WA', borLabel: 'Yakima River at Easton', name: 'Yakima R at Easton', region: 'Yakima Basin', species: ['trout'], cfs: 369, tempC: null, spark30: [] },
+  { id: 'YRWW', source: 'bor', state: 'WA', borLabel: 'Yakima River near Horlick', name: 'Yakima R nr Horlick', region: 'Yakima Basin', species: ['trout'], cfs: 2550, tempC: null, spark30: [] },
+  { id: 'TNAW', source: 'bor', state: 'WA', borLabel: 'Teanaway River at Forks', name: 'Teanaway R at Forks', region: 'Yakima Basin', species: ['trout'], cfs: 225, tempC: null, spark30: [] },
+  { id: 'RBDW', source: 'bor', state: 'WA', borLabel: 'Yakima River blw Roza Dam', name: 'Yakima R blw Roza Dam', region: 'Yakima Basin', species: ['trout'], cfs: 924, tempC: null, spark30: [] },
   // WASHINGTON — Yakima Basin (USGS)
   { id: '12484500', source: 'usgs', state: 'WA', name: 'Yakima R at Umtanum (Canyon)', region: 'Yakima Basin', species: ['trout'], cfs: 2800, tempC: null, spark30: [2310,2180,2030,2120,3060,2980,1940,1780,1980,1830,1770,1840,1930,1820,2520,2810,2700,1950,1840,1770,1830,2030,2080,2210,2480,2740,3260,3600,2960,2620] },
   { id: '12500450', source: 'usgs', state: 'WA', name: 'Yakima R at Union Gap', region: 'Yakima Basin', species: ['trout'], cfs: 2720, tempC: null, spark30: [3720,3380,3140,2990,3500,4410,4080,3300,2790,2470,2360,2390,2530,2580,2610,2970,3840,4140,3640,3300,3090,2990,2740,2510,2450,2440,2460,2590,2720,2730] },
   { id: '12510500', source: 'usgs', state: 'WA', name: 'Yakima R at Kiona', region: 'Yakima Basin', species: ['trout'], cfs: 1530, tempC: 16.9, spark30: [2780,2280,2100,1890,1670,3040,3480,2500,1630,1270,1050,875,953,1250,1110,1230,2610,3100,2660,2010,1650,1540,1390,1130,964,828,814,970,2070,1920] },
-  { id: 'PARW', source: 'bor', state: 'WA', borLabel: 'Yakima River near Parker', name: 'Yakima R nr Parker', region: 'Yakima Basin', species: ['trout'], cfs: 725, tempC: null, spark30: [] },
+  { id: 'PARW', source: 'bor', state: 'WA', borLabel: 'Yakima River near Parker', name: 'Yakima R nr Parker', region: 'Yakima Basin', species: ['trout'], cfs: 512, tempC: null, spark30: [] },
   // WASHINGTON — Naches Basin
-  { id: 'CLFW', source: 'bor', state: 'WA', borLabel: 'Naches River nr. Clf\'Dell', name: 'Naches R nr Cliffdell', region: 'Naches Basin', species: ['trout'], cfs: 614, tempC: null, spark30: [] },
+  { id: 'CLFW', source: 'bor', state: 'WA', borLabel: 'Naches River nr. Clf\'Dell', name: 'Naches R nr Cliffdell', region: 'Naches Basin', species: ['trout'], cfs: 675, tempC: null, spark30: [] },
   { id: '12488500', source: 'usgs', state: 'WA', name: 'American R nr Nile', region: 'Naches Basin', species: ['trout'], cfs: 209, tempC: null, spark30: [407,400,385,442,431,368,328,295,269,249,241,251,269,295,309,300,268,247,263,341,293,243,222,214,221,215,209,196,180,168] },
   { id: '12492900', source: 'usgs', state: 'WA', name: 'Oak Creek nr Naches', region: 'Naches Basin', species: ['trout'], cfs: 7.44, tempC: 10.4, spark30: [13,13,13,13,12,12,12,11,11,11,10,10,10,9,9,9,9,9,9,9,9,8,8,8,8,7,7,7,7,7] },
   // WASHINGTON — North Cascades / NW WA
