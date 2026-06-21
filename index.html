@@ -107,13 +107,34 @@
   .res-read { font-size: 11px; color: #b9cad6; margin-top: 8px; padding-top: 6px; border-top: 1px dashed #243240; line-height: 1.35; }
   .flipflop-banner { font-size: 11px; color: #cdb87a; background: #241f12; border: 1px solid #463a1c; border-radius: 4px; padding: 6px 8px; margin-bottom: 8px; line-height: 1.35; }
   .flipflop-banner.ff-active { color: #ffe0a0; background: #2e2410; border-color: #5a4a1c; }
+  /* Today's picks strip */
+  .top-strip { background: #11160f; border: 1px solid #2a342a; border-radius: 6px; padding: 10px 12px; margin-bottom: 16px; }
+  .sum-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .sum-pill { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 10px; text-transform: capitalize; }
+  .sum-ideal { background: #2c5e2c; color: #d8f0d8; }
+  .sum-fishable { background: #3a5a3a; color: #c8e0c8; }
+  .sum-low { background: #8a6a1f; color: #fff0d0; }
+  .sum-high { background: #a07020; color: #ffe0c0; }
+  .sum-blown { background: #802020; color: #ffd0d0; }
+  .picks-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: #6a7a6a; margin-bottom: 5px; }
+  .picks-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pick-chip { font-size: 11px; color: #d8f0d8; background: #18241a; border: 1px solid #2c5e2c; border-radius: 12px; padding: 4px 10px; cursor: pointer; font-family: inherit; }
+  .pick-chip:hover { background: #1f311f; }
+  .pick-chip-cfs { color: #8aa08a; font-weight: 600; }
+  .picks-empty { font-size: 11px; color: #6a7a6a; font-style: italic; }
+  /* Destination waters */
+  .dest-wrap { margin-top: 8px; }
+  .dest-toggle { width: 100%; text-align: left; font-size: 15px; font-weight: 700; color: #a0d8a0; background: #141a13; border: 1px solid #2a342a; border-radius: 5px; padding: 8px 12px; cursor: pointer; font-family: inherit; margin-bottom: 10px; }
+  .dest-toggle:hover { background: #182017; }
+  .dest-count { font-size: 11px; font-weight: 400; color: #7a8a7a; }
+  .gauge-region { font-size: 9px; color: #6a8a6a; margin-top: 1px; text-transform: uppercase; letter-spacing: 0.4px; }
 </style>
 </head>
 <body>
 <div class="header">
   <div>
     <h1>River Flows</h1>
-    <div class="meta" id="meta">Updated: June 21, 2026 at 3:43 PM PT</div>
+    <div class="meta" id="meta">Updated: June 21, 2026 at 3:59 PM PT</div>
   </div>
 </div>
 
@@ -139,6 +160,11 @@
       <span class="legend-item"><span class="legend-dot" style="background:#f0a020"></span>High</span>
       <span class="legend-item"><span class="legend-dot" style="background:#d63838"></span>Blown</span>
     </div>
+  </div>
+  <div class="filter-row" id="sort-filter">
+    <span class="filter-label">Sort</span>
+    <button class="filter-btn active" data-sort="location">Location</button>
+    <button class="filter-btn" data-sort="fish">Best first</button>
   </div>
 </div>
 
@@ -416,46 +442,182 @@ function renderSparkline(canvas, data, color) {
   sparkCharts.push(chart);
 }
 
-// ----- Filter state -----
-let selectedStates = new Set(STATE_ORDER); // default: all states on
+// ----- Filter + view state -----
+const HOME_STATE = 'WA';
+const DEFAULT_STATES = [HOME_STATE]; // default: home water only
+let selectedStates = new Set(DEFAULT_STATES);
 let selectedSpecies = 'all';
+let selectedSort = 'location'; // 'location' | 'fish'
+let currentFiltered = [];
 
 function loadFilters() {
   try {
+    // One-time migration to v2: reset the saved state filter so the new WA default takes effect once.
+    if (localStorage.getItem('riverflows_schema') !== '2') {
+      localStorage.removeItem('riverflows_states');
+      localStorage.setItem('riverflows_schema', '2');
+    }
     const savedStates = localStorage.getItem('riverflows_states');
     if (savedStates) {
       const arr = JSON.parse(savedStates);
       if (Array.isArray(arr) && arr.length > 0) {
         selectedStates = new Set(arr.filter(s => STATE_ORDER.includes(s)));
-        if (selectedStates.size === 0) selectedStates = new Set(STATE_ORDER);
+        if (selectedStates.size === 0) selectedStates = new Set(DEFAULT_STATES);
       }
     }
     const savedSpecies = localStorage.getItem('riverflows_species');
-    if (savedSpecies && ['all', 'trout', 'steelhead'].includes(savedSpecies)) {
-      selectedSpecies = savedSpecies;
-    }
+    if (savedSpecies && ['all', 'trout', 'steelhead'].includes(savedSpecies)) selectedSpecies = savedSpecies;
+    const savedSort = localStorage.getItem('riverflows_sort');
+    if (savedSort && ['location', 'fish'].includes(savedSort)) selectedSort = savedSort;
   } catch (e) { /* ignore */ }
 }
 function saveFilters() {
   localStorage.setItem('riverflows_states', JSON.stringify([...selectedStates]));
   localStorage.setItem('riverflows_species', selectedSpecies);
+  localStorage.setItem('riverflows_sort', selectedSort);
 }
+function loadDestCollapsed() { try { return localStorage.getItem('riverflows_dest_collapsed') === '1'; } catch (e) { return false; } }
+function saveDestCollapsed(v) { try { localStorage.setItem('riverflows_dest_collapsed', v ? '1' : '0'); } catch (e) { /* ignore */ } }
 
 function syncFilterUI() {
-  // State buttons
   const allOn = selectedStates.size === STATE_ORDER.length;
   document.querySelectorAll('#state-filter .filter-btn').forEach(b => {
     const s = b.dataset.state;
-    if (s === 'ALL') {
-      b.classList.toggle('active', allOn);
-    } else {
-      b.classList.toggle('active', selectedStates.has(s) && !allOn);
-    }
+    if (s === 'ALL') b.classList.toggle('active', allOn);
+    else b.classList.toggle('active', selectedStates.has(s) && !allOn);
   });
-  // Species buttons
   document.querySelectorAll('#species-filter .filter-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.species === selectedSpecies);
   });
+  document.querySelectorAll('#sort-filter .filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.sort === selectedSort);
+  });
+}
+
+// ----- Fishability ranking (lower = better) -----
+function fishRank(g) {
+  const fish = getFishability(g.id, g.cfs);
+  const tempF = g.tempC != null ? cToF(g.tempC) : null;
+  const isPick = fish.cls === 'ideal' && (tempF == null || (tempF >= 50 && tempF <= 65));
+  const order = { ideal: 1, fishable: 2, low: 3, high: 4, blown: 5, unknown: 6 };
+  return isPick ? 0 : (order[fish.cls] != null ? order[fish.cls] : 6);
+}
+
+// ----- Single gauge card -----
+function renderCard(g, showRegion) {
+  const tempF = g.tempC != null ? cToF(g.tempC) : null;
+  const fish = getFishability(g.id, g.cfs);
+  const tags = g.species.map(s => `<span class="tag tag-${s}">${s === 'trout' ? 'Trout' : 'Steel'}</span>`).join('');
+  const rangeText = fish.range ? `Ideal ${formatCFS(fish.range.ideal[0])}–${formatCFS(fish.range.ideal[1])} cfs` : '';
+  const cfsBlock = g.cfs == null
+    ? `<div class="no-data">No data right now</div>`
+    : `<div class="stats"><span class="cfs-value">${formatCFS(g.cfs)}</span><span class="cfs-unit">cfs</span></div>`;
+  const gaugeUrl = g.source === 'bor' ? 'https://www.usbr.gov/pn/hydromet/yakima/' : 'https://waterdata.usgs.gov/monitoring-location/' + g.id + '/';
+  const regionLabel = showRegion ? `<div class="gauge-region">${g.region}</div>` : '';
+  return `<a id="card-${g.id}" href="${gaugeUrl}" target="_blank" rel="noopener" class="card ${fish.cls}">
+    <div class="card-header">
+      <div>
+        <div class="gauge-name">${g.name}</div>
+        ${regionLabel}
+        <div class="gauge-id">${g.source === 'bor' ? 'BOR' : 'USGS'} #${g.id} ↗</div>
+      </div>
+      <div class="species-tags">${tags}</div>
+    </div>
+    ${cfsBlock}
+    <div class="fishability-row">
+      <span class="fish-pill ${fish.cls}">${fish.status}</span>
+      <span class="range-info">${rangeText}</span>
+    </div>
+    ${tempF != null ? `<div class="temp"><span class="temp-dot ${tempClass(tempF)}"></span>${tempF.toFixed(1)}°F water</div>` : ''}
+    ${g.spark30 && g.spark30.length >= 3 ? `
+    <div class="sparkline-label">30-day flow</div>
+    <div class="sparkline-wrap"><canvas id="spark-${g.id}"></canvas></div>` : ''}
+    ${g.cfs != null ? (() => { const b = getBrief(g, fish); return `<div class="brief ${b.isPick ? 'pick' : ''}">${b.html}</div>`; })() : ''}
+  </a>`;
+}
+
+// ----- Today's picks strip (summary + best-pick chips) -----
+function renderTopStrip(filtered) {
+  const counts = { ideal: 0, fishable: 0, low: 0, high: 0, blown: 0, unknown: 0 };
+  const picks = [];
+  for (const g of filtered) {
+    const fish = getFishability(g.id, g.cfs);
+    counts[fish.cls] = (counts[fish.cls] || 0) + 1;
+    const tempF = g.tempC != null ? cToF(g.tempC) : null;
+    if (fish.cls === 'ideal' && (tempF == null || (tempF >= 50 && tempF <= 65))) picks.push(g);
+  }
+  const pillDefs = [['ideal', 'ideal'], ['fishable', 'fishable'], ['low', 'low'], ['high', 'high'], ['blown', 'blown']];
+  const pills = pillDefs.filter(([k]) => counts[k] > 0)
+    .map(([k, label]) => `<span class="sum-pill sum-${k}">${counts[k]} ${label}</span>`).join('');
+  let picksHtml;
+  if (picks.length) {
+    picksHtml = picks.slice(0, 12).map(g =>
+      `<button type="button" class="pick-chip" onclick="jumpToCard('${g.id}')">★ ${g.name} <span class="pick-chip-cfs">${formatCFS(g.cfs)} cfs</span></button>`).join('');
+  } else {
+    picksHtml = '<span class="picks-empty">Nothing in prime shape in this filter right now.</span>';
+  }
+  return `<div class="top-strip">
+    <div class="sum-row">${pills || '<span class="picks-empty">No data</span>'}</div>
+    <div class="picks-label">Fishing best right now</div>
+    <div class="picks-row">${picksHtml}</div>
+  </div>`;
+}
+
+// ----- One state's section (region groups, or flat best-first list) -----
+function renderStateBlock(state, regions) {
+  const total = Object.values(regions).reduce((s, arr) => s + arr.length, 0);
+  let html = `<div class="state-section"><div class="state-title">${STATE_NAMES[state]} <span class="state-count">${total} gauge${total === 1 ? '' : 's'}</span></div>`;
+  if (state === 'WA' && selectedSpecies !== 'steelhead') html += renderReservoirs();
+  if (selectedSort === 'fish') {
+    const all = [].concat(...Object.values(regions)).slice().sort((a, b) => {
+      const d = fishRank(a) - fishRank(b);
+      return d !== 0 ? d : (b.cfs || 0) - (a.cfs || 0);
+    });
+    html += '<div class="grid">';
+    for (const g of all) html += renderCard(g, true);
+    html += '</div>';
+  } else {
+    for (const regionName of Object.keys(regions)) {
+      html += `<div class="region"><div class="region-title">${regionName}</div><div class="grid">`;
+      for (const g of regions[regionName]) html += renderCard(g, false);
+      html += '</div></div>';
+    }
+  }
+  html += '</div>';
+  return html;
+}
+
+// global: jump from a pick chip to its card (expands destination section if needed)
+function jumpToCard(id) {
+  const el = document.getElementById('card-' + id);
+  if (!el) return;
+  const body = document.getElementById('dest-body');
+  if (body && body.contains(el) && body.style.display === 'none') {
+    body.style.display = '';
+    const arrow = document.getElementById('dest-arrow');
+    if (arrow) arrow.textContent = '▾';
+    saveDestCollapsed(false);
+    renderVisibleSparklines();
+  }
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// render sparklines only for currently-visible cards (skips collapsed destination cards)
+function renderVisibleSparklines() {
+  const body = document.getElementById('dest-body');
+  const destCollapsed = body ? body.style.display === 'none' : false;
+  for (const g of currentFiltered) {
+    if (!(g.spark30 && g.spark30.length >= 3)) continue;
+    if (g.state !== HOME_STATE && destCollapsed) continue;
+    const cv = document.getElementById('spark-' + g.id);
+    if (cv && !cv.dataset.rendered) { renderSparkline(cv, g.spark30); cv.dataset.rendered = '1'; }
+  }
+  if (selectedStates.has(HOME_STATE) && selectedSpecies !== 'steelhead') {
+    for (const r of RESERVOIRS) {
+      const cv = document.getElementById('res-spark-' + r.id);
+      if (cv && !cv.dataset.rendered) { renderSparkline(cv, r.outflow30, '#58a6ff'); cv.dataset.rendered = '1'; }
+    }
+  }
 }
 
 function render() {
@@ -464,71 +626,42 @@ function render() {
     selectedStates.has(g.state) &&
     (selectedSpecies === 'all' || g.species.includes(selectedSpecies))
   );
-  // Group by state, then region
+  currentFiltered = filtered;
   const byState = {};
   for (const g of filtered) {
     if (!byState[g.state]) byState[g.state] = {};
     if (!byState[g.state][g.region]) byState[g.state][g.region] = [];
     byState[g.state][g.region].push(g);
   }
-  let html = '';
-  for (const state of STATE_ORDER) {
-    if (!byState[state]) continue;
-    const regions = byState[state];
-    const total = Object.values(regions).reduce((s, arr) => s + arr.length, 0);
-    html += `<div class="state-section"><div class="state-title">${STATE_NAMES[state]} <span class="state-count">${total} gauge${total === 1 ? '' : 's'}</span></div>`;
-    if (state === 'WA' && selectedSpecies !== 'steelhead') html += renderReservoirs();
-    for (const regionName of Object.keys(regions)) {
-      html += `<div class="region"><div class="region-title">${regionName}</div><div class="grid">`;
-      for (const g of regions[regionName]) {
-        const tempF = g.tempC != null ? cToF(g.tempC) : null;
-        const fish = getFishability(g.id, g.cfs);
-        const tags = g.species.map(s => `<span class="tag tag-${s}">${s === 'trout' ? 'Trout' : 'Steel'}</span>`).join('');
-        const rangeText = fish.range ? `Ideal ${formatCFS(fish.range.ideal[0])}–${formatCFS(fish.range.ideal[1])} cfs` : '';
-        const cfsBlock = g.cfs == null
-          ? `<div class="no-data">No data right now</div>`
-          : `<div class="stats"><span class="cfs-value">${formatCFS(g.cfs)}</span><span class="cfs-unit">cfs</span></div>`;
-        const gaugeUrl = g.source === 'bor' ? 'https://www.usbr.gov/pn/hydromet/yakima/' : 'https://waterdata.usgs.gov/monitoring-location/' + g.id + '/';
-        html += `<a href="${gaugeUrl}" target="_blank" rel="noopener" class="card ${fish.cls}">
-          <div class="card-header">
-            <div>
-              <div class="gauge-name">${g.name}</div>
-              <div class="gauge-id">${g.source === 'bor' ? 'BOR' : 'USGS'} #${g.id} ↗</div>
-            </div>
-            <div class="species-tags">${tags}</div>
-          </div>
-          ${cfsBlock}
-          <div class="fishability-row">
-            <span class="fish-pill ${fish.cls}">${fish.status}</span>
-            <span class="range-info">${rangeText}</span>
-          </div>
-          ${tempF != null ? `<div class="temp"><span class="temp-dot ${tempClass(tempF)}"></span>${tempF.toFixed(1)}°F water</div>` : ''}
-          ${g.spark30 && g.spark30.length >= 3 ? `
-          <div class="sparkline-label">30-day flow</div>
-          <div class="sparkline-wrap"><canvas id="spark-${g.id}"></canvas></div>` : ''}
-          ${g.cfs != null ? (() => { const b = getBrief(g, fish); return `<div class="brief ${b.isPick ? 'pick' : ''}">${b.html}</div>`; })() : ''}
-        </a>`;
-      }
-      html += '</div></div>';
-    }
-    html += '</div>';
+  let html = filtered.length ? renderTopStrip(filtered) : '';
+  if (byState[HOME_STATE]) html += renderStateBlock(HOME_STATE, byState[HOME_STATE]);
+  const destStates = STATE_ORDER.filter(s => s !== HOME_STATE && byState[s]);
+  if (destStates.length) {
+    const collapsed = loadDestCollapsed();
+    const destTotal = destStates.reduce((n, s) => n + Object.values(byState[s]).reduce((a, arr) => a + arr.length, 0), 0);
+    html += `<div class="dest-wrap">
+      <button type="button" class="dest-toggle" id="dest-toggle"><span id="dest-arrow">${collapsed ? '▸' : '▾'}</span> Destination waters <span class="dest-count">${destStates.map(s => STATE_NAMES[s]).join(' · ')} &middot; ${destTotal} gauges</span></button>
+      <div class="dest-body" id="dest-body" style="${collapsed ? 'display:none' : ''}">`;
+    for (const s of destStates) html += renderStateBlock(s, byState[s]);
+    html += `</div></div>`;
   }
   if (!html) html = '<div class="no-data">No gauges match the current filters.</div>';
   // Tear down existing sparkline charts before replacing the DOM (avoids leaking Chart instances on re-filter)
   sparkCharts.forEach(c => c.destroy());
   sparkCharts = [];
   content.innerHTML = html;
-  for (const g of filtered) {
-    if (g.spark30 && g.spark30.length >= 3) {
-      const canvas = document.getElementById(`spark-${g.id}`);
-      if (canvas) renderSparkline(canvas, g.spark30);
-    }
-  }
-  if (selectedStates.has('WA') && selectedSpecies !== 'steelhead') {
-    for (const r of RESERVOIRS) {
-      const cv = document.getElementById(`res-spark-${r.id}`);
-      if (cv) renderSparkline(cv, r.outflow30, '#58a6ff');
-    }
+  renderVisibleSparklines();
+  const destToggle = document.getElementById('dest-toggle');
+  if (destToggle) {
+    destToggle.addEventListener('click', () => {
+      const body = document.getElementById('dest-body');
+      const arrow = document.getElementById('dest-arrow');
+      const nowCollapsed = body.style.display !== 'none';
+      body.style.display = nowCollapsed ? 'none' : '';
+      if (arrow) arrow.textContent = nowCollapsed ? '▸' : '▾';
+      saveDestCollapsed(nowCollapsed);
+      if (!nowCollapsed) renderVisibleSparklines();
+    });
   }
 }
 
@@ -544,7 +677,7 @@ document.querySelectorAll('#state-filter .filter-btn').forEach(btn => {
         selectedStates = new Set([s]);
       } else if (selectedStates.has(s)) {
         selectedStates.delete(s);
-        if (selectedStates.size === 0) selectedStates = new Set(STATE_ORDER); // never empty
+        if (selectedStates.size === 0) selectedStates = new Set(DEFAULT_STATES); // never empty
       } else {
         selectedStates.add(s);
       }
@@ -557,6 +690,14 @@ document.querySelectorAll('#state-filter .filter-btn').forEach(btn => {
 document.querySelectorAll('#species-filter .filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     selectedSpecies = btn.dataset.species;
+    saveFilters();
+    syncFilterUI();
+    render();
+  });
+});
+document.querySelectorAll('#sort-filter .filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedSort = btn.dataset.sort;
     saveFilters();
     syncFilterUI();
     render();
