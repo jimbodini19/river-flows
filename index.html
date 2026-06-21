@@ -134,7 +134,7 @@
 <div class="header">
   <div>
     <h1>River Flows</h1>
-    <div class="meta" id="meta">Updated: June 21, 2026 at 4:21 PM PT</div>
+    <div class="meta" id="meta">Updated: June 21, 2026 at 4:29 PM PT</div>
   </div>
 </div>
 
@@ -249,43 +249,43 @@ const RESERVOIRS = [
 const FISHABILITY = {
   // BOR upper Yakima
   'EASW': { low: 70, ideal: [100, 280], high: 350, blown: 700 },
-  'YRWW': { low: 500, ideal: [1000, 3000], high: 5000, blown: 8000 },
-  'TNAW': { low: 50, ideal: [100, 400], high: 700, blown: 1200 },
-  'RBDW': { low: 800, ideal: [1500, 3500], high: 5500, blown: 8000 },
-  'PARW': { low: 500, ideal: [800, 2500], high: 4500, blown: 7000 },
-  'CLFW': { low: 200, ideal: [400, 1500], high: 2500, blown: 4000 },
+  'YRWW': { low: 350, ideal: [500, 1050], high: 1300, blown: 2600 },
+  'TNAW': { low: 35, ideal: [50, 140], high: 180, blown: 350 },
+  'RBDW': { low: 520, ideal: [750, 1200], high: 1500, blown: 3000 },
+  'PARW': { low: 280, ideal: [400, 880], high: 1100, blown: 2200 },
+  'CLFW': { low: 140, ideal: [200, 520], high: 650, blown: 1300 },
   // USGS — WA
-  '12484500': { low: 500, ideal: [1000, 2500], high: 4000, blown: 6500 },
-  '12500450': { low: 1000, ideal: [1500, 3500], high: 5500, blown: 8000 },
-  '12510500': { low: 1000, ideal: [1500, 4000], high: 6500, blown: 10000 },
-  '12488500': { low: 100, ideal: [150, 500], high: 800, blown: 1500 },
-  '12492900': { low: 3, ideal: [8, 30], high: 60, blown: 120 },
-  '12134500': { low: 1000, ideal: [1500, 3000], high: 4500, blown: 9000 },
-  '12189500': { low: 800, ideal: [1200, 3000], high: 5000, blown: 9000 },
-  '12194000': { low: 2500, ideal: [3500, 9000], high: 14000, blown: 22000 },
-  '12449950': { low: 600, ideal: [1000, 2500], high: 4000, blown: 7000 },
-  '12041200': { low: 800, ideal: [1500, 3500], high: 5500, blown: 9000 },
-  '12043000': { low: 200, ideal: [400, 1200], high: 2000, blown: 3500 },
-  '12043300': { low: 50, ideal: [100, 400], high: 800, blown: 1500 },
+  '12484500': { low: 350, ideal: [500, 880], high: 1100, blown: 2200 },
+  '12500450': { low: 520, ideal: [750, 1200], high: 1500, blown: 3000 },
+  '12510500': { low: 520, ideal: [750, 1400], high: 1750, blown: 3500 },
+  '12488500': { low: 50, ideal: [75, 180], high: 220, blown: 450 },
+  '12492900': { low: 3, ideal: [4, 10], high: 12, blown: 25 },
+  '12134500': { low: 520, ideal: [750, 1050], high: 1300, blown: 2600 },
+  '12189500': { low: 420, ideal: [600, 1050], high: 1300, blown: 2600 },
+  '12194000': { low: 1200, ideal: [1750, 3150], high: 3950, blown: 7900 },
+  '12449950': { low: 350, ideal: [500, 880], high: 1100, blown: 2200 },
+  '12041200': { low: 520, ideal: [750, 1200], high: 1500, blown: 3000 },
+  '12043000': { low: 140, ideal: [200, 420], high: 520, blown: 1050 },
+  '12043300': { low: 35, ideal: [50, 140], high: 180, blown: 350 },
   // USGS — MT
-  '06043500': { low: 200, ideal: [400, 1500], high: 2500, blown: 4500 },
-  '06041000': { low: 600, ideal: [900, 1800], high: 2500, blown: 4000 },
-  '12340500': { low: 1500, ideal: [2500, 6000], high: 10000, blown: 15000 },
+  '06043500': { low: 140, ideal: [200, 520], high: 650, blown: 1300 },
+  '06041000': { low: 320, ideal: [450, 630], high: 790, blown: 1600 },
+  '12340500': { low: 880, ideal: [1250, 2100], high: 2600, blown: 5250 },
   // USGS — ID
-  '12414500': { low: 150, ideal: [300, 1200], high: 2500, blown: 4500 },
+  '12414500': { low: 100, ideal: [150, 420], high: 520, blown: 1050 },
   // USGS — AZ
   '09380000': { low: 4500, ideal: [7000, 13000], high: 16000, blown: 20000 }, // Lees Ferry; dam-controlled
-  '09504420': { low: 8, ideal: [15, 60], high: 120, blown: 250 },             // Oak Creek nr Sedona
-  '09505800': { low: 4, ideal: [10, 40], high: 80, blown: 150 },              // West Clear Creek
-  '09490500': { low: 8, ideal: [15, 80], high: 150, blown: 300 },             // Black R nr Fort Apache
+  '09504420': { low: 6, ideal: [8, 20], high: 25, blown: 50 },             // Oak Creek nr Sedona
+  '09505800': { low: 4, ideal: [5, 14], high: 18, blown: 35 },              // West Clear Creek
+  '09490500': { low: 6, ideal: [8, 30], high: 40, blown: 75 },             // Black R nr Fort Apache
   '09502000': { low: 200, ideal: [500, 1500], high: 4000, blown: 8000 },      // Salt blw Stewart Mountain Dam (SRP-controlled)
-  '09506000': { low: 40, ideal: [80, 160], high: 350, blown: 800 },           // Verde nr Camp Verde (ideal centered ~120)
-  '09504950': { low: 25, ideal: [60, 120], high: 250, blown: 600 },           // Verde above Camp Verde (smaller upper stretch)
+  '09506000': { low: 30, ideal: [40, 55], high: 70, blown: 140 },           // Verde nr Camp Verde (ideal centered ~120)
+  '09504950': { low: 20, ideal: [30, 40], high: 50, blown: 100 },           // Verde above Camp Verde (smaller upper stretch)
   // USGS — GA
-  '03558000': { low: 200, ideal: [300, 500], high: 800, blown: 1500 },        // Toccoa nr Dial
-  '02176930': { low: 80, ideal: [150, 500], high: 800, blown: 1500 },         // Chattooga Burrells Ford
-  '02177000': { low: 200, ideal: [400, 1200], high: 2000, blown: 3500 },      // Chattooga nr Clayton
-  '02331600': { low: 200, ideal: [350, 900], high: 1500, blown: 3000 },       // Hooch nr Cornelia
+  '03558000': { low: 100, ideal: [150, 180], high: 220, blown: 450 },        // Toccoa nr Dial
+  '02176930': { low: 50, ideal: [75, 180], high: 220, blown: 450 },         // Chattooga Burrells Ford
+  '02177000': { low: 140, ideal: [200, 420], high: 520, blown: 1050 },      // Chattooga nr Clayton
+  '02331600': { low: 130, ideal: [180, 320], high: 400, blown: 800 },       // Hooch nr Cornelia
   '02334430': { low: 500, ideal: [600, 1500], high: 4000, blown: 6000 },      // Hooch at Buford Dam (tailwater)
 };
 
