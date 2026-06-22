@@ -141,15 +141,20 @@
   .gen-chip.on { background: #2a1414; color: #f0a0a0; border: 1px solid #802020; font-weight: 600; }
   .toccoa-link { font-size: 10px; color: #9a8463; text-decoration: none; }
   .toccoa-link:hover { color: #c0a070; }
+  /* Stale-data banner */
+  .stale-banner { background: #3a1e1e; border: 1px solid #802020; color: #f3b8b8; padding: 9px 12px; border-radius: 6px; margin-bottom: 12px; font-size: 12px; line-height: 1.4; }
+  .stale-banner strong { color: #ffd0d0; }
 </style>
 </head>
 <body>
 <div class="header">
   <div>
     <h1>River Flows</h1>
-    <div class="meta" id="meta">Updated: June 21, 2026 at 5:14 PM PT</div>
+    <div class="meta" id="meta">Updated: June 21, 2026 at 5:59 PM PT</div>
   </div>
 </div>
+
+<div id="stale-banner" class="stale-banner" style="display:none"></div>
 
 <div class="controls">
   <div class="filter-row" id="state-filter">
@@ -774,9 +779,26 @@ document.querySelectorAll('#sort-filter .filter-btn').forEach(btn => {
   });
 });
 
+// Warn if the data hasn't refreshed recently (e.g. the 2am job couldn't reach Chrome).
+function checkStale() {
+  const el = document.getElementById('meta');
+  const banner = document.getElementById('stale-banner');
+  if (!el || !banner) return;
+  const raw = el.textContent.replace('Updated:', '').replace(' at ', ' ').replace(/\s*PT\s*$/, '').trim();
+  const d = new Date(raw);
+  if (isNaN(d.getTime())) return;
+  const hrs = (Date.now() - d.getTime()) / 3600000;
+  if (hrs > 28) {
+    const age = hrs >= 48 ? Math.floor(hrs / 24) + ' days' : Math.round(hrs) + ' hours';
+    banner.innerHTML = `<strong>⚠ Flows are ${age} stale.</strong> The auto-refresh hasn't run — most likely Chrome was closed when it fired. Open Chrome and it'll catch up on the next scheduled run (it now retries through the morning), or refresh manually.`;
+    banner.style.display = '';
+  }
+}
+
 loadFilters();
 syncFilterUI();
 render();
+checkStale();
 </script>
 </body>
 </html>
