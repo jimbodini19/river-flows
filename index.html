@@ -128,13 +128,26 @@
   .dest-toggle:hover { background: #182017; }
   .dest-count { font-size: 11px; font-weight: 400; color: #7a8a7a; }
   .gauge-region { font-size: 9px; color: #6a8a6a; margin-top: 1px; text-transform: uppercase; letter-spacing: 0.4px; }
+  /* Toccoa / Blue Ridge Dam generation schedule */
+  .toccoa-panel { background: #1a1410; border: 1px solid #3a2e20; border-radius: 6px; padding: 10px 12px; margin-bottom: 14px; }
+  .toccoa-title { font-size: 13px; font-weight: 700; color: #e0b878; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .toccoa-sub { font-size: 10px; font-weight: 400; color: #9a8463; text-transform: none; letter-spacing: 0; }
+  .toccoa-note { font-size: 11px; color: #b9a988; margin-bottom: 8px; line-height: 1.35; }
+  .gen-day { display: flex; gap: 6px; align-items: baseline; margin-bottom: 5px; flex-wrap: wrap; }
+  .gen-date { font-size: 10px; font-weight: 700; color: #9aa08a; min-width: 70px; }
+  .gen-chips { display: flex; gap: 4px; flex-wrap: wrap; }
+  .gen-chip { font-size: 10px; padding: 2px 7px; border-radius: 10px; }
+  .gen-chip.off { background: #18241a; color: #8acf8a; border: 1px solid #2c5e2c; }
+  .gen-chip.on { background: #2a1414; color: #f0a0a0; border: 1px solid #802020; font-weight: 600; }
+  .toccoa-link { font-size: 10px; color: #9a8463; text-decoration: none; }
+  .toccoa-link:hover { color: #c0a070; }
 </style>
 </head>
 <body>
 <div class="header">
   <div>
     <h1>River Flows</h1>
-    <div class="meta" id="meta">Updated: June 21, 2026 at 4:29 PM PT</div>
+    <div class="meta" id="meta">Updated: June 21, 2026 at 5:14 PM PT</div>
   </div>
 </div>
 
@@ -245,6 +258,22 @@ const RESERVOIRS = [
     outflow30: [474,376,905,1878,1876,1386,740,411,384,340,418,495,466,382,858,1161,603,350,337,325,325,325,325,325,332,352,373,380,380,380] },
 ];
 // RES_DATA_END
+
+// TOCCOA_DATA_BEGIN
+// Blue Ridge Dam (TVA) generation schedule for the Toccoa tailwater, scraped from
+// tva.com/environment/lake-levels/blue-ridge. gen >= 1 means a generator is running (water ON, not wadeable).
+const TOCCOA_UPDATED = '6/21 7 PM EDT';
+const TOCCOA_DISCHARGE = 1677; // latest observed tailwater discharge, cfs
+const TOCCOA_GEN = [
+  { day: '06/21/2026', time: '1 AM - 2 PM', gen: 0 },
+  { day: '06/21/2026', time: '2 PM - 8 PM', gen: 1 },
+  { day: '06/21/2026', time: '8 PM - Midnight', gen: 0 },
+  { day: '06/22/2026', time: 'Midnight - 1 PM', gen: 0 },
+  { day: '06/22/2026', time: '1 PM - 8 PM', gen: 1 },
+  { day: '06/22/2026', time: '8 PM - Midnight', gen: 0 },
+  { day: '06/23/2026', time: 'Midnight - 1 AM', gen: 0 },
+];
+// TOCCOA_DATA_END
 
 const FISHABILITY = {
   // BOR upper Yakima
@@ -429,6 +458,36 @@ function renderReservoirs() {
   return h;
 }
 
+// ----- Toccoa / Blue Ridge Dam generation schedule (GA) -----
+function renderToccoa() {
+  if (typeof TOCCOA_GEN === 'undefined' || !TOCCOA_GEN.length) return '';
+  const byDay = {};
+  for (const r of TOCCOA_GEN) { (byDay[r.day] = byDay[r.day] || []).push(r); }
+  // anchor "today" to Eastern time (the dam's schedule timezone), not the viewer's
+  const etNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+  const todayMid = new Date(etNow.getFullYear(), etNow.getMonth(), etNow.getDate());
+  const fmtDay = (d) => {
+    const [mm, dd, yy] = d.split('/').map(Number);
+    const dt = new Date(yy, mm - 1, dd);
+    const diff = Math.round((dt - todayMid) / 86400000);
+    if (diff === 0) return 'Today';
+    if (diff === 1) return 'Tomorrow';
+    return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dt.getDay()] + ' ' + mm + '/' + dd;
+  };
+  let rows = '';
+  for (const day of Object.keys(byDay)) {
+    const chips = byDay[day].map(r =>
+      `<span class="gen-chip ${r.gen >= 1 ? 'on' : 'off'}">${r.time}${r.gen >= 1 ? ' · ON' : ''}</span>`).join('');
+    rows += `<div class="gen-day"><span class="gen-date">${fmtDay(day)}</span><span class="gen-chips">${chips}</span></div>`;
+  }
+  return `<div class="toccoa-panel">
+    <div class="toccoa-title">Blue Ridge Dam <span class="toccoa-sub">Toccoa tailwater &middot; ${formatCFS(TOCCOA_DISCHARGE)} cfs now &middot; as of ${TOCCOA_UPDATED}</span></div>
+    <div class="toccoa-note">Wade the green (off) windows. When a generator kicks on, discharge climbs toward ~1,700 cfs within an hour.</div>
+    ${rows}
+    <a href="https://www.tva.com/environment/lake-levels/blue-ridge" target="_blank" rel="noopener" class="toccoa-link">TVA full schedule ↗</a>
+  </div>`;
+}
+
 let sparkCharts = [];
 function renderSparkline(canvas, data, color) {
   if (!data || data.length < 3) return;
@@ -578,6 +637,7 @@ function renderStateBlock(state, regions) {
   const total = Object.values(regions).reduce((s, arr) => s + arr.length, 0);
   let html = `<div class="state-section"><div class="state-title">${STATE_NAMES[state]} <span class="state-count">${total} gauge${total === 1 ? '' : 's'}</span></div>`;
   if (state === 'WA' && selectedSpecies !== 'steelhead') html += renderReservoirs();
+  if (state === 'GA') html += renderToccoa();
   if (selectedSort === 'fish') {
     const all = [].concat(...Object.values(regions)).slice().sort((a, b) => {
       const d = fishRank(a) - fishRank(b);
