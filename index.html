@@ -153,7 +153,7 @@
 <div class="header">
   <div>
     <h1>River Flows</h1>
-    <div class="meta" id="meta">Updated: July 13, 2026 at 5:05 AM PT</div>
+    <div class="meta" id="meta">Updated: July 14, 2026 at 3:45 AM PT</div>
   </div>
 </div>
 
@@ -208,79 +208,79 @@ const GAUGES = [
   { id: 'TNAW', source: 'bor', state: 'WA', borLabel: 'Teanaway River at Forks', name: 'Teanaway R at Forks', region: 'Yakima Basin', species: ['trout'], cfs: 99, tempC: null, spark30: [222,214,205,203,230,206,191,182,175,173,167,161,156,248,221,199,185,174,166,158,151,146,139,132,127,123,118,113,110,108] },
   { id: 'RBDW', source: 'bor', state: 'WA', borLabel: 'Yakima River blw Roza Dam', name: 'Yakima R blw Roza Dam', region: 'Yakima Basin', species: ['trout'], cfs: 284, tempC: null, spark30: [1853,2208,2176,1518,1351,1334,1344,1374,916,609,601,783,1187,1627,1094,722,969,984,765,754,948,1109,1081,1148,1204,1239] },
   // WASHINGTON — Yakima Basin (USGS)
-  { id: '12484500', source: 'usgs', state: 'WA', name: 'Yakima R at Umtanum (Canyon)', region: 'Yakima Basin', species: ['trout'], cfs: 3680, tempC: null, spark30: [2840,2990,2970,3070,3130,3180,3190,3220,3270,3220,2900,2970,3060,3220,3260,3290,3280,3090,3200,3290,3390,3450,3530,3520,3420,3550,3690,3720,3730,3720] },
-  { id: '12500450', source: 'usgs', state: 'WA', name: 'Yakima R at Union Gap', region: 'Yakima Basin', species: ['trout'], cfs: 2730, tempC: null, spark30: [2670,2660,2650,2640,2630,2630,2620,2620,2620,2630,2600,2540,2520,2510,2510,2530,2560,2570,2560,2560,2570,2570,2590,2610,2620,2620,2630,2650,2680,2710] },
-  { id: '12510500', source: 'usgs', state: 'WA', name: 'Yakima R at Kiona', region: 'Yakima Basin', species: ['trout'], cfs: 824, tempC: 22.7, spark30: [864,828,961,938,816,839,758,734,744,749,862,940,732,779,857,885,983,1040,964,778,743,786,779,842,878,814,712,698,771,815] },
+  { id: '12484500', source: 'usgs', state: 'WA', name: 'Yakima R at Umtanum (Canyon)', region: 'Yakima Basin', species: ['trout'], cfs: 3700, tempC: null, spark30: [2990,2970,3070,3130,3180,3190,3220,3270,3220,2900,2970,3060,3220,3260,3290,3280,3090,3200,3290,3390,3450,3530,3520,3420,3550,3690,3720,3730,3720,3720] },
+  { id: '12500450', source: 'usgs', state: 'WA', name: 'Yakima R at Union Gap', region: 'Yakima Basin', species: ['trout'], cfs: 2750, tempC: null, spark30: [2660,2650,2640,2630,2630,2620,2620,2620,2630,2600,2540,2520,2510,2510,2530,2560,2570,2560,2560,2570,2570,2590,2610,2620,2620,2630,2650,2680,2710,2740] },
+  { id: '12510500', source: 'usgs', state: 'WA', name: 'Yakima R at Kiona', region: 'Yakima Basin', species: ['trout'], cfs: 874, tempC: 24.3, spark30: [828,961,938,816,839,758,734,744,749,862,940,732,779,857,885,983,1040,964,778,743,786,779,842,878,814,712,698,771,815,866] },
   { id: 'PARW', source: 'bor', state: 'WA', borLabel: 'Yakima River near Parker', name: 'Yakima R nr Parker', region: 'Yakima Basin', species: ['trout'], cfs: 284, tempC: null, spark30: [2286,1257,903,905,837,583,461,449,536,867,2376,1622,679,603,962,646,416,489,569,516,447,469,429,428,426,466,718,530,435,541] },
   // WASHINGTON — Naches Basin
   { id: 'CLFW', source: 'bor', state: 'WA', borLabel: 'Naches River nr. Clf\'Dell', name: 'Naches R nr Cliffdell', region: 'Naches Basin', species: ['trout'], cfs: 392, tempC: null, spark30: [858,843,1074,1070,998,918,746,733,695,661,651,634,613,766,811,681,587,572,561,558,577,569,517,476,462,453,441,430,421,414] },
-  { id: '12488500', source: 'usgs', state: 'WA', name: 'American R nr Nile', region: 'Naches Basin', species: ['trout'], cfs: 66.9, tempC: null, spark30: [191,186,184,182,172,157,146,140,133,125,118,114,110,106,103,100,96,93,90,87,84,82,80,78,75,73,72,70,69,67] },
-  { id: '12492900', source: 'usgs', state: 'WA', name: 'Oak Creek nr Naches', region: 'Naches Basin', species: ['trout'], cfs: 3.74, tempC: 14.2, spark30: [6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,4,4,4] },
+  { id: '12488500', source: 'usgs', state: 'WA', name: 'American R nr Nile', region: 'Naches Basin', species: ['trout'], cfs: 64.4, tempC: null, spark30: [186,184,182,172,157,146,140,133,125,118,114,110,106,103,100,96,93,90,87,84,82,80,78,75,73,72,70,69,67,66] },
+  { id: '12492900', source: 'usgs', state: 'WA', name: 'Oak Creek nr Naches', region: 'Naches Basin', species: ['trout'], cfs: 3.74, tempC: 16, spark30: [6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,4,4,4,4] },
   // WASHINGTON — North Cascades / NW WA
-  { id: '12134500', source: 'usgs', state: 'WA', name: 'Skykomish R nr Gold Bar', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 801, tempC: 15.9, spark30: [2750,2560,2470,2380,2180,1980,1850,1810,1700,1610,1540,1470,1420,1360,1560,1430,1330,1290,1230,1160,1170,1150,1080,1020,985,959,926,887,858,832] },
-  { id: '12131500', source: 'usgs', state: 'WA', name: 'SF Skykomish at Skykomish', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 404, tempC: null, spark30: [1120,1080,1080,1070,1010,923,873,857,812,769,734,708,687,666,712,646,618,601,573,542,532,520,497,475,466,460,450,434,424,415] },
-  { id: '12189500', source: 'usgs', state: 'WA', name: 'Sauk R at Sauk', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 2240, tempC: 14.4, spark30: [3710,3970,4480,4830,4360,3940,3850,4160,3910,3730,3640,3580,3630,3090,3430,3090,2860,2920,2790,2570,2790,2930,2730,2600,2670,2720,2550,2430,2440,2380] },
-  { id: '12194000', source: 'usgs', state: 'WA', name: 'Skagit R nr Concrete', region: 'North Cascades / NW WA', species: ['steelhead'], cfs: 8930, tempC: null, spark30: [11600,14500,16200,14700,13800,15000,16100,14900,13300,15800,16300,13500,14500,12400,11700,11800,11100,11700,11600,10600,9750,10400,11200,10900,11200,10700,9150,8950,9090,8990] },
-  { id: '12141300', source: 'usgs', state: 'WA', name: 'MF Snoqualmie nr Tanner', region: 'North Cascades / NW WA', species: ['trout'], cfs: 239, tempC: null, spark30: [904,809,753,717,650,574,529,519,479,448,421,405,395,401,546,462,410,410,396,367,360,357,329,309,296,289,281,265,256,246] },
-  { id: '12448500', source: 'usgs', state: 'WA', name: 'Methow R at Winthrop', region: 'Methow Valley', species: ['trout', 'steelhead'], cfs: 560, tempC: null, spark30: [1420,1470,1640,1830,1830,1640,1520,1470,1410,1320,1240,1180,1140,1060,1000,941,901,902,863,810,776,759,733,692,663,652,632,612,592,579] },
-  { id: '12449500', source: 'usgs', state: 'WA', name: 'Methow R at Twisp', region: 'Methow Valley', species: ['trout', 'steelhead'], cfs: 756, tempC: null, spark30: [1860,1910,2110,2380,2410,2150,2000,1940,1880,1770,1670,1590,1550,1460,1380,1290,1230,1240,1190,1120,1060,1040,1000,949,905,886,859,832,806,786] },
-  { id: '12448998', source: 'usgs', state: 'WA', name: 'Twisp R nr Twisp', region: 'Methow Valley', species: ['trout'], cfs: 162, tempC: null, spark30: [386,403,457,532,524,458,425,421,413,385,367,356,352,328,309,284,271,282,274,249,234,228,220,206,196,192,188,184,178,170] },
-  { id: '12448000', source: 'usgs', state: 'WA', name: 'Chewuch R at Winthrop', region: 'Methow Valley', species: ['trout'], cfs: 125, tempC: null, spark30: [492,470,450,438,425,406,381,360,343,331,313,293,282,270,259,252,241,232,219,213,207,195,182,172,162,153,146,141,136,131] },
+  { id: '12134500', source: 'usgs', state: 'WA', name: 'Skykomish R nr Gold Bar', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 769, tempC: 16.6, spark30: [2560,2470,2380,2180,1980,1850,1810,1700,1610,1540,1470,1420,1360,1560,1430,1330,1290,1230,1160,1170,1150,1080,1020,985,959,926,887,858,832,797] },
+  { id: '12131500', source: 'usgs', state: 'WA', name: 'SF Skykomish at Skykomish', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 385, tempC: null, spark30: [1080,1080,1070,1010,923,873,857,812,769,734,708,687,666,712,646,618,601,573,542,532,520,497,475,466,460,450,434,424,415,397] },
+  { id: '12189500', source: 'usgs', state: 'WA', name: 'Sauk R at Sauk', region: 'North Cascades / NW WA', species: ['trout', 'steelhead'], cfs: 2120, tempC: 15.2, spark30: [3970,4480,4830,4360,3940,3850,4160,3910,3730,3640,3580,3630,3090,3430,3090,2860,2920,2790,2570,2790,2930,2730,2600,2670,2720,2550,2430,2440,2380,2240] },
+  { id: '12194000', source: 'usgs', state: 'WA', name: 'Skagit R nr Concrete', region: 'North Cascades / NW WA', species: ['steelhead'], cfs: 10200, tempC: null, spark30: [14500,16200,14700,13800,15000,16100,14900,13300,15800,16300,13500,14500,12400,11700,11800,11100,11700,11600,10600,9750,10400,11200,10900,11200,10700,9150,8950,9090,8990,9900] },
+  { id: '12141300', source: 'usgs', state: 'WA', name: 'MF Snoqualmie nr Tanner', region: 'North Cascades / NW WA', species: ['trout'], cfs: 224, tempC: null, spark30: [809,753,717,650,574,529,519,479,448,421,405,395,401,546,462,410,410,396,367,360,357,329,309,296,289,281,265,256,246,233] },
+  { id: '12448500', source: 'usgs', state: 'WA', name: 'Methow R at Winthrop', region: 'Methow Valley', species: ['trout', 'steelhead'], cfs: 524, tempC: null, spark30: [1470,1640,1830,1830,1640,1520,1470,1410,1320,1240,1180,1140,1060,1000,941,901,902,863,810,776,759,733,692,663,652,632,612,592,579,550] },
+  { id: '12449500', source: 'usgs', state: 'WA', name: 'Methow R at Twisp', region: 'Methow Valley', species: ['trout', 'steelhead'], cfs: 709, tempC: null, spark30: [1910,2110,2380,2410,2150,2000,1940,1880,1770,1670,1590,1550,1460,1380,1290,1230,1240,1190,1120,1060,1040,1000,949,905,886,859,832,806,786,746] },
+  { id: '12448998', source: 'usgs', state: 'WA', name: 'Twisp R nr Twisp', region: 'Methow Valley', species: ['trout'], cfs: 151, tempC: null, spark30: [403,457,532,524,458,425,421,413,385,367,356,352,328,309,284,271,282,274,249,234,228,220,206,196,192,188,184,178,170,159] },
+  { id: '12448000', source: 'usgs', state: 'WA', name: 'Chewuch R at Winthrop', region: 'Methow Valley', species: ['trout'], cfs: 119, tempC: null, spark30: [470,450,438,425,406,381,360,343,331,313,293,282,270,259,252,241,232,219,213,207,195,182,172,162,153,146,141,136,131,124] },
   // WASHINGTON — Olympic Peninsula
-  { id: '12041200', source: 'usgs', state: 'WA', name: 'Hoh R nr Forks', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 557, tempC: null, spark30: [957,980,1030,1040,1010,878,861,912,809,802,823,857,875,879,1130,823,718,690,657,630,754,717,658,623,645,648,640,637,648,591] },
-  { id: '12043000', source: 'usgs', state: 'WA', name: 'Calawah R nr Forks', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 107, tempC: 14.4, spark30: [283,253,231,215,203,192,182,174,168,161,153,147,145,188,210,165,149,140,134,137,160,142,132,124,118,115,111,109,106,112] },
-  { id: '12043300', source: 'usgs', state: 'WA', name: 'Hoko R nr Sekiu', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 30.1, tempC: null, spark30: [57,50,46,44,44,42,40,36,35,34,32,30,30,39,47,39,35,33,31,38,65,47,42,35,34,32,30,28,30,31] },
+  { id: '12041200', source: 'usgs', state: 'WA', name: 'Hoh R nr Forks', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 510, tempC: null, spark30: [980,1030,1040,1010,878,861,912,809,802,823,857,875,879,1130,823,718,690,657,630,754,717,658,623,645,648,640,637,648,591,553] },
+  { id: '12043000', source: 'usgs', state: 'WA', name: 'Calawah R nr Forks', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 99.8, tempC: 15.3, spark30: [253,231,215,203,192,182,174,168,161,153,147,145,188,210,165,149,140,134,137,160,142,132,124,118,115,111,109,106,112,105] },
+  { id: '12043300', source: 'usgs', state: 'WA', name: 'Hoko R nr Sekiu', region: 'Olympic Peninsula', species: ['steelhead'], cfs: 26.9, tempC: null, spark30: [50,46,44,44,42,40,36,35,34,32,30,30,39,47,39,35,33,31,38,65,47,42,35,34,32,30,28,30,31,29] },
   // MONTANA
-  { id: '06043500', source: 'usgs', state: 'MT', name: 'Gallatin R nr Gateway', region: 'Greater Yellowstone', species: ['trout'], cfs: 740, tempC: null, spark30: [1280,1220,1190,1190,1250,1190,1140,1160,1260,1150,1090,1030,1020,1010,1000,1170,1140,1180,1200,1220,1170,1090,1030,1000,958,927,911,862,818,775] },
-  { id: '06041000', source: 'usgs', state: 'MT', name: 'Madison R bl Ennis Lake', region: 'Greater Yellowstone', species: ['trout'], cfs: 1530, tempC: 21.9, spark30: [1550,1530,1470,1400,1370,1370,1370,1360,1380,1380,1310,1250,1240,1240,1240,1500,1770,1800,1670,1620,1670,1720,1660,1570,1540,1520,1500,1400,1590,1630] },
-  { id: '12340500', source: 'usgs', state: 'MT', name: 'Clark Fork at Missoula', region: 'Western Montana', species: ['trout'], cfs: 2780, tempC: 19.6, spark30: [4700,4410,4180,4030,3960,3910,3750,3590,3490,3370,3250,3110,3000,2980,3080,3280,3950,5490,5600,5290,4930,4460,4070,3800,3620,3470,3300,3140,3010,2870] },
+  { id: '06043500', source: 'usgs', state: 'MT', name: 'Gallatin R nr Gateway', region: 'Greater Yellowstone', species: ['trout'], cfs: 733, tempC: null, spark30: [1220,1190,1190,1250,1190,1140,1160,1260,1150,1090,1030,1020,1010,1000,1170,1140,1180,1200,1220,1170,1090,1030,1000,958,927,911,862,818,775,748] },
+  { id: '06041000', source: 'usgs', state: 'MT', name: 'Madison R bl Ennis Lake', region: 'Greater Yellowstone', species: ['trout'], cfs: 1480, tempC: 21.6, spark30: [1530,1470,1400,1370,1370,1370,1360,1380,1380,1310,1250,1240,1240,1240,1500,1770,1800,1670,1620,1670,1720,1660,1570,1540,1520,1500,1400,1590,1630,1620] },
+  { id: '12340500', source: 'usgs', state: 'MT', name: 'Clark Fork at Missoula', region: 'Western Montana', species: ['trout'], cfs: 2670, tempC: 19, spark30: [4410,4180,4030,3960,3910,3750,3590,3490,3370,3250,3110,3000,2980,3080,3280,3950,5490,5600,5290,4930,4460,4070,3800,3620,3470,3300,3140,3010,2870,2740] },
   // IDAHO
-  { id: '12414500', source: 'usgs', state: 'ID', name: 'St Joe R at Calder', region: 'Idaho Panhandle', species: ['trout'], cfs: 852, tempC: null, spark30: [1950,1880,1820,1770,1720,1650,1590,1540,1490,1430,1380,1330,1290,1280,1330,1270,1710,1510,1330,1230,1170,1120,1080,1040,1020,975,941,913,886,859] },
+  { id: '12414500', source: 'usgs', state: 'ID', name: 'St Joe R at Calder', region: 'Idaho Panhandle', species: ['trout'], cfs: 829, tempC: null, spark30: [1880,1820,1770,1720,1650,1590,1540,1490,1430,1380,1330,1290,1280,1330,1270,1710,1510,1330,1230,1170,1120,1080,1040,1020,975,941,913,886,859,843] },
   // ARIZONA — Grand Canyon (Colorado below Glen Canyon Dam)
-  { id: '09380000', source: 'usgs', state: 'AZ', name: 'Colorado R at Lees Ferry', region: 'Grand Canyon Tailwater', species: ['trout'], cfs: 6870, tempC: 18.8, spark30: [8490,8490,8570,8550,8560,8550,8550,8490,8480,8550,8550,8590,8570,8540,8490,8470,8520,8140,7860,7860,7700,7690,7820,7870,7850,7880,7880,7710,7700] },
+  { id: '09380000', source: 'usgs', state: 'AZ', name: 'Colorado R at Lees Ferry', region: 'Grand Canyon Tailwater', species: ['trout'], cfs: 7440, tempC: 18.7, spark30: [8490,8570,8550,8560,8550,8550,8490,8480,8550,8550,8590,8570,8540,8490,8470,8520,8140,7860,7860,7700,7690,7820,7870,7850,7880,7880,7710,7700,7890] },
   // ARIZONA — Mogollon Rim
-  { id: '09504420', source: 'usgs', state: 'AZ', name: 'Oak Creek nr Sedona', region: 'Mogollon Rim', species: ['trout'], cfs: 33.6, tempC: 19.7, spark30: [32,32,32,31,31,31,31,30,31,30,30,31,32,31,30,30,31,31,31,31,31,31,31,31,31,31,31,31,31,32] },
-  { id: '09505800', source: 'usgs', state: 'AZ', name: 'West Clear Creek nr Camp Verde', region: 'Mogollon Rim', species: ['trout'], cfs: 14.5, tempC: 24, spark30: [14,16,15,14,14,14,14,13,13,12,12,12,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,11,11,12] },
+  { id: '09504420', source: 'usgs', state: 'AZ', name: 'Oak Creek nr Sedona', region: 'Mogollon Rim', species: ['trout'], cfs: 35.4, tempC: 19.8, spark30: [32,32,31,31,31,31,30,31,30,30,31,32,31,30,30,31,31,31,31,31,31,31,31,31,31,31,31,31,32,34] },
+  { id: '09505800', source: 'usgs', state: 'AZ', name: 'West Clear Creek nr Camp Verde', region: 'Mogollon Rim', species: ['trout'], cfs: 16.7, tempC: 23.8, spark30: [16,15,14,14,14,14,13,13,12,12,12,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,11,11,12,15] },
   // ARIZONA — White Mountains
-  { id: '09490500', source: 'usgs', state: 'AZ', name: 'Black R nr Fort Apache', region: 'White Mountains', species: ['trout'], cfs: 26.8, tempC: null, spark30: [18,18,18,18,18,19,20,22,21,20,20,18,17,15,15,14,13,15,15,14,14,14,14,15,15,15,16,21,23,25] },
+  { id: '09490500', source: 'usgs', state: 'AZ', name: 'Black R nr Fort Apache', region: 'White Mountains', species: ['trout'], cfs: 29.8, tempC: null, spark30: [18,18,18,18,19,20,22,21,20,20,18,17,15,15,14,13,15,15,14,14,14,14,15,15,15,16,21,23,25,36] },
   // ARIZONA — Lower Salt River (Phoenix area, stocked trout Sep–Apr)
-  { id: '09502000', source: 'usgs', state: 'AZ', name: 'Salt R blw Stewart Mountain Dam', region: 'Lower Salt River', species: ['trout'], cfs: 451, tempC: null, spark30: [795,697,870,912,869,986,939,931,875,792,937,957,951,1000,981,843,813,796,758,792,734,675,570,606,605,554,577,625,472,512] },
+  { id: '09502000', source: 'usgs', state: 'AZ', name: 'Salt R blw Stewart Mountain Dam', region: 'Lower Salt River', species: ['trout'], cfs: 487, tempC: null, spark30: [697,870,912,869,986,939,931,875,792,937,957,951,1000,981,843,813,796,758,792,734,675,570,606,605,554,577,625,472,512,466] },
   // ARIZONA — Verde Valley
-  { id: '09506000', source: 'usgs', state: 'AZ', name: 'Verde R nr Camp Verde', region: 'Verde Valley', species: ['trout'], cfs: 29.8, tempC: null, spark30: [37,38,45,48,46,47,45,44,45,44,44,42,39,40,40,37,37,36,34,32,33,33,34,34,31,30,29,30,28,29] },
-  { id: '09504950', source: 'usgs', state: 'AZ', name: 'Verde R above Camp Verde (Upper)', region: 'Verde Valley', species: ['trout'], cfs: 40.8, tempC: 26.6, spark30: [43,43,42,38,39,36,37,37,34,37,37,36,35,36,35,35,40,38,38,36,34,36,38,37,35,33,33,36,35] },
+  { id: '09506000', source: 'usgs', state: 'AZ', name: 'Verde R nr Camp Verde', region: 'Verde Valley', species: ['trout'], cfs: 31.7, tempC: null, spark30: [38,45,48,46,47,45,44,45,44,44,42,39,40,40,37,37,36,34,32,33,33,34,34,31,30,29,30,28,29,30] },
+  { id: '09504950', source: 'usgs', state: 'AZ', name: 'Verde R above Camp Verde (Upper)', region: 'Verde Valley', species: ['trout'], cfs: 51.7, tempC: 26.3, spark30: [43,42,38,39,36,37,37,34,37,37,36,35,36,35,35,40,38,38,36,34,36,38,37,35,33,33,36,36,45] },
   // GEORGIA — Toccoa
-  { id: '03558000', source: 'usgs', state: 'GA', name: 'Toccoa R nr Dial (Upper)', region: 'Toccoa Basin', species: ['trout'], cfs: 265, tempC: null, spark30: [286,301,324,276,264,267,430,310,280,279,345,283,266,256,250,250,238,234,242,245,255,272,252,233,237,219,221,233,257,255] },
+  { id: '03558000', source: 'usgs', state: 'GA', name: 'Toccoa R nr Dial (Upper)', region: 'Toccoa Basin', species: ['trout'], cfs: 313, tempC: null, spark30: [301,324,276,264,267,430,310,280,279,345,283,266,256,250,250,238,234,242,245,255,272,252,233,237,219,221,233,257,255,292] },
   // GEORGIA — Chattooga
-  { id: '02176930', source: 'usgs', state: 'GA', name: 'Chattooga R at Burrells Ford', region: 'Chattooga', species: ['trout'], cfs: 157, tempC: 19.4, spark30: [91,87,84,76,72,84,132,83,74,69,76,67,63,61,60,58,58,56,55,52,49,48,47,51,47,48,43,43,47,65,320] },
-  { id: '02177000', source: 'usgs', state: 'GA', name: 'Chattooga R nr Clayton (Hwy 76)', region: 'Chattooga', species: ['trout'], cfs: 347, tempC: null, spark30: [337,329,348,303,289,306,527,356,311,290,311,290,267,260,258,259,252,240,235,229,218,212,207,208,206,199,192,186,241,245] },
+  { id: '02176930', source: 'usgs', state: 'GA', name: 'Chattooga R at Burrells Ford', region: 'Chattooga', species: ['trout'], cfs: 72.7, tempC: 20, spark30: [87,84,76,72,84,132,83,74,69,76,67,63,61,60,58,58,56,55,52,49,48,47,51,47,48,43,43,47,65,133,72] },
+  { id: '02177000', source: 'usgs', state: 'GA', name: 'Chattooga R nr Clayton (Hwy 76)', region: 'Chattooga', species: ['trout'], cfs: 285, tempC: null, spark30: [329,348,303,289,306,527,356,311,290,311,290,267,260,258,259,252,240,235,229,218,212,207,208,206,199,192,186,241,245,353] },
   // GEORGIA — Chattahoochee
-  { id: '02331600', source: 'usgs', state: 'GA', name: 'Chattahoochee R nr Cornelia (Upper Hooch)', region: 'Chattahoochee', species: ['trout'], cfs: 363, tempC: null, spark30: [323,313,334,302,296,334,730,418,352,338,361,313,297,288,281,286,289,274,264,251,239,234,233,256,236,216,203,219,325,396] },
-  { id: '02334430', source: 'usgs', state: 'GA', name: 'Chattahoochee R at Buford Dam (Tailwater)', region: 'Chattahoochee', species: ['trout'], cfs: 636, tempC: 9.3, spark30: [921,1030,978,966,961,982,647,975,980,971,959,972,976,967,986,955,1020,1210,961,970,957,961,956,931,963,899,1010,972,919,967] },
+  { id: '02331600', source: 'usgs', state: 'GA', name: 'Chattahoochee R nr Cornelia (Upper Hooch)', region: 'Chattahoochee', species: ['trout'], cfs: 1450, tempC: null, spark30: [313,334,302,296,334,730,418,352,338,361,313,297,288,281,286,289,274,264,251,239,234,233,256,236,216,203,219,325,396,466] },
+  { id: '02334430', source: 'usgs', state: 'GA', name: 'Chattahoochee R at Buford Dam (Tailwater)', region: 'Chattahoochee', species: ['trout'], cfs: 636, tempC: 9.5, spark30: [1030,978,966,961,982,647,975,980,971,959,972,976,967,986,955,1020,1210,961,970,957,961,956,931,963,899,1010,972,919,967,1020] },
 ];
 // DATA_END
 
 // RES_DATA_BEGIN
 // Yakima Project reservoir releases (BOR Hydromet daily.pl: QD = outflow cfs, AF = storage acre-feet).
 // outflow/storageAF/storagePrevAF are the latest finalized daily readings; outflow30 is the 30-day release series.
-const RES_UPDATED = '2026-07-12';
+const RES_UPDATED = '2026-07-13';
 const RESERVOIRS = [
   { id: 'CLE', name: 'Cle Elum', drives: 'Upper Yakima', capacityAF: 436900,
-    outflow: 2993, storageAF: 270930, storagePrevAF: 276333,
-    outflow30: [2197,2245,2314,2397,2463,2522,2573,2650,2682,2508,2437,2547,2664,2729,2727,2716,2612,2607,2708,2796,2846,2881,2915,2887,2903,3011,3051,3032,3014,2993] },
+    outflow: 2961, storageAF: 265651, storagePrevAF: 270930,
+    outflow30: [2245,2314,2397,2463,2522,2573,2650,2682,2508,2437,2547,2664,2729,2727,2716,2612,2607,2708,2796,2846,2881,2915,2887,2903,3011,3051,3032,3014,2993,2961] },
   { id: 'RIM', name: 'Rimrock (Tieton)', drives: 'Naches / Tieton', capacityAF: 198000,
-    outflow: 409, storageAF: 185136, storagePrevAF: 185424,
-    outflow30: [325,325,332,352,372,380,380,380,380,380,380,380,380,380,380,380,380,379,381,382,380,380,380,380,390,404,409,409,409,409] },
+    outflow: 418, storageAF: 184584, storagePrevAF: 184896,
+    outflow30: [325,332,352,372,380,380,380,380,380,380,380,380,380,380,380,380,379,381,382,380,380,380,380,390,404,409,409,409,409,418] },
 ];
 // RES_DATA_END
 
 // TOCCOA_DATA_BEGIN
 // Blue Ridge Dam (TVA) generation schedule for the Toccoa tailwater, scraped from
 // tva.com/environment/lake-levels/blue-ridge. gen >= 1 means a generator is running (water ON, not wadeable).
-const TOCCOA_UPDATED = '7/13 7 AM EDT';
-const TOCCOA_DISCHARGE = 158; // latest observed tailwater discharge, cfs
+const TOCCOA_UPDATED = '7/14 6 AM EDT';
+const TOCCOA_DISCHARGE = 157; // latest observed tailwater discharge, cfs
 const TOCCOA_GEN = [
-  { day: '07/13/2026', time: '1 AM - Midnight', gen: 0 },
-  { day: '07/14/2026', time: 'Midnight - 1 AM', gen: 0 },
+  { day: '07/14/2026', time: '1 AM - Midnight', gen: 0 },
+  { day: '07/15/2026', time: 'Midnight - 1 AM', gen: 0 },
 ];
 // TOCCOA_DATA_END
 
