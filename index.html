@@ -153,7 +153,7 @@
 <div class="header">
   <div>
     <h1>River Flows</h1>
-    <div class="meta" id="meta">Updated: September 9, 2026 at 6:26 AM PT</div>
+    <div class="meta" id="meta">Updated: September 10, 2026 at 6:21 AM PT</div>
   </div>
 </div>
 
@@ -262,27 +262,27 @@ const GAUGES = [
 // RES_DATA_BEGIN
 // Yakima Project reservoir releases (BOR Hydromet daily.pl: QD = outflow cfs, AF = storage acre-feet).
 // outflow/storageAF/storagePrevAF are the latest finalized daily readings; outflow30 is the 30-day release series.
-const RES_UPDATED = '2026-09-08';
+const RES_UPDATED = '2026-09-09';
 const RESERVOIRS = [
   { id: 'CLE', name: 'Cle Elum', drives: 'Upper Yakima', capacityAF: 436900,
-    outflow: 673, storageAF: 34118, storagePrevAF: 35052,
-    outflow30: [2669,2620,2572,2521,2469,2416,2377,2261,2166,2106,2041,1980,1916,1846,1741,1629,1556,1486,1381,1267,1174,1053,931,828,754,728,717,713,713,673] },
+    outflow: 557, storageAF: 33341, storagePrevAF: 34118,
+    outflow30: [2620,2572,2521,2469,2416,2377,2261,2166,2106,2041,1980,1916,1846,1741,1629,1556,1486,1381,1267,1174,1053,931,828,754,728,717,713,713,661,557] },
   { id: 'RIM', name: 'Rimrock (Tieton)', drives: 'Naches / Tieton', capacityAF: 198000,
-    outflow: 1096, storageAF: 132200, storagePrevAF: 133950,
-    outflow30: [480,489,510,532,540,525,474,455,549,745,834,868,868,868,868,912,990,1074,1079,1054,1036,1015,1011,1176,1300,1270,1218,1151,1096,1096] },
+    outflow: 1115, storageAF: 130410, storagePrevAF: 132200,
+    outflow30: [489,510,532,540,525,474,455,549,745,834,868,868,868,868,912,990,1074,1079,1054,1036,1015,1011,1176,1300,1270,1218,1151,1096,1096,1115] },
 ];
 // RES_DATA_END
 
 // TOCCOA_DATA_BEGIN
 // Blue Ridge Dam (TVA) generation schedule for the Toccoa tailwater, scraped from
 // tva.com/environment/lake-levels/blue-ridge. gen >= 1 means a generator is running (water ON, not wadeable).
-const TOCCOA_UPDATED = '9/9 9 AM EDT';
+const TOCCOA_UPDATED = '9/10 9 AM EDT';
 const TOCCOA_DISCHARGE = 156; // latest observed tailwater discharge, cfs
 const TOCCOA_GEN = [
-  { day: '09/09/2026', time: '1 AM - 4 PM', gen: 0 },
-  { day: '09/09/2026', time: '4 PM - 7 PM', gen: 1 },
-  { day: '09/09/2026', time: '7 PM - Midnight', gen: 0 },
-  { day: '09/10/2026', time: 'Midnight - 1 AM', gen: 0 },
+  { day: '09/10/2026', time: '1 AM - 4 PM', gen: 0 },
+  { day: '09/10/2026', time: '4 PM - 8 PM', gen: 1 },
+  { day: '09/10/2026', time: '8 PM - Midnight', gen: 0 },
+  { day: '09/11/2026', time: 'Midnight - 1 AM', gen: 0 },
 ];
 // TOCCOA_DATA_END
 
